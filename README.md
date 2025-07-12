@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-# ReWear - Sustainable Fashion Exchange Platform
+# 👗 ReWear - Sustainable Fashion Exchange Platform
 
-ReWear is a community-driven web platform designed to promote sustainable fashion by enabling users to exchange unused clothing. Instead of discarding wearable garments, users can upload their items, browse others' listings, and either request a direct swap or redeem clothes using a points-based system.
+A modern, comprehensive web application for exchanging fashion items sustainably. Built with Flask and MongoDB Atlas, featuring advanced user management, analytics, and a world-class admin dashboard.
 
 ## 🌟 Features
 
@@ -23,8 +22,9 @@ ReWear is a community-driven web platform designed to promote sustainable fashio
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.7 or higher
+- Python 3.10 or higher
 - pip (Python package installer)
+- MongoDB Atlas account (free tier available)
 
 ### Installation
 
@@ -38,10 +38,10 @@ ReWear is a community-driven web platform designed to promote sustainable fashio
    pip install -r requirements.txt
    ```
 
-3. **Initialize demo data** (optional but recommended)
-   ```bash
-   python init_demo_data.py
-   ```
+3. **Database Setup**
+   - MongoDB Atlas is pre-configured with sample data
+   - Connection string: `mongodb+srv://mkbharvad8080:Mkb%408080@cluster0.a82h2.mongodb.net/`
+   - Database automatically initializes on first run
 
 4. **Run the application**
    ```bash
@@ -129,7 +129,9 @@ After running the demo data initialization, you can use these accounts:
 ### Backend
 - **Flask** - Python web framework
 - **Werkzeug** - WSGI utilities and security
-- **JSON Storage** - File-based data storage (easily replaceable with MongoDB)
+- **MongoDB Atlas** - Cloud database with global availability
+- **PyMongo** - MongoDB driver for Python
+- **DNSPython** - DNS toolkit for MongoDB connectivity
 
 ### Frontend
 - **Bootstrap 5** - Responsive CSS framework

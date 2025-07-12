@@ -79,5 +79,113 @@
     "ip_address": "127.0.0.1",
     "timestamp": "2025-07-12T13:58:41.585776",
     "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "df2c085d-f4a1-4178-b5c7-0398d18316dc",
+    "user_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "action": "LOGIN",
+    "details": "User Meet patel logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:17:16.699238",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "742736dc-8bb0-44ab-9fd3-1c7d07ce94f6",
+    "user_id": "41bc4b4a-1036-4f72-8766-ceec055f99c8",
+    "action": "REGISTER",
+    "details": "New user Arish registered with email mayur.k.bharvad@gmail.com",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:27:11.636635",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "df3e43c8-5068-4c0e-9332-eee0020e6d32",
+    "user_id": "41bc4b4a-1036-4f72-8766-ceec055f99c8",
+    "action": "LOGIN",
+    "details": "User Arish logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:27:18.029646",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "a6f225c9-1019-415d-86c0-5beb5b78b497",
+    "user_id": "41bc4b4a-1036-4f72-8766-ceec055f99c8",
+    "action": "ITEM_UPLOAD",
+    "details": "Uploaded item: TOP (tops) for 10 points",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:28:26.141516",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "50271e97-09d4-4216-9a18-dba9c317ff65",
+    "user_id": "41bc4b4a-1036-4f72-8766-ceec055f99c8",
+    "action": "ITEM_UPLOAD",
+    "details": "Uploaded item: pents (bottoms) for 19 points",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:29:54.568710",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "c407fae8-8643-4e74-821b-1bda4b52c122",
+    "user_id": "7921cd13-7bb5-4cbd-860e-e89e117672ea",
+    "action": "LOGIN",
+    "details": "User Admin User logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:31:38.766258",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "a0025ccc-9853-455b-8d25-07aaef8eb83d",
+    "user_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "action": "LOGIN",
+    "details": "User Meet patel logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:42:44.871952",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "e96c08de-50a0-4386-b30b-f823dcbef5a8",
+    "user_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "action": "ITEM_EXCHANGE_REQUEST",
+    "details": "Requested exchange for item: TOP (spent 10 points)",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:50:38.553107",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "cbc0db6d-8d21-4f07-89be-6d0678e588c1",
+    "user_id": "41bc4b4a-1036-4f72-8766-ceec055f99c8",
+    "action": "ITEM_EXCHANGE_RECEIVED",
+    "details": "Item exchanged: TOP (earned 10 points)",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:50:38.585538",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "f14e4533-225f-413d-bc0f-b79d5d10433a",
+    "user_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "action": "LOGIN",
+    "details": "User Meet patel logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T14:59:48.112946",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "0e890f24-4dc0-404d-9ce7-0fcd8ec6a79e",
+    "user_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "action": "LOGIN",
+    "details": "User Meet patel logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T15:16:28.779134",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "3bd135b4-39ae-4a60-b09a-9ffdc7b6c1d9",
+    "user_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "action": "ITEM_UPLOAD",
+    "details": "Uploaded item: Jack (tops) for 28 points",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T15:17:44.181767",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
   }
 ]

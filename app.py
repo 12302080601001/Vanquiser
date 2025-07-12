@@ -7,20 +7,29 @@ import json
 from datetime import datetime
 import uuid
 import threading
+from dotenv import load_dotenv
+from database import (
+    get_user_by_email, get_user_by_id, get_user_items, get_user_exchanges,
+    get_user_activities, get_user_wishlist, insert_document, find_documents,
+    find_one_document, update_document, delete_document, count_documents
+)
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'rewear_secret_key_2024'
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.secret_key = os.getenv('SECRET_KEY', 'rewear_secret_key_2024')
+app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', 'static/uploads')
+app.config['MAX_CONTENT_LENGTH'] = int(os.getenv('MAX_CONTENT_LENGTH', 16777216))  # 16MB max file size
 
 # Email Configuration
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'mkbharvad534@gmail.com'
-app.config['MAIL_PASSWORD'] = 'dwtp fmiq miyl ccvq'
-app.config['MAIL_DEFAULT_SENDER'] = 'mkbharvad534@gmail.com'
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'True').lower() == 'true'
+app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL', 'False').lower() == 'true'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'mkbharvad534@gmail.com')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'dwtp fmiq miyl ccvq')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', 'mkbharvad534@gmail.com')
 
 # Initialize Flask-Mail
 mail = Mail(app)
@@ -28,33 +37,25 @@ mail = Mail(app)
 # Create upload directory if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# Simple file-based database (in production, use MongoDB)
-USERS_FILE = 'data/users.json'
-ITEMS_FILE = 'data/items.json'
-EXCHANGES_FILE = 'data/exchanges.json'
-ACTIVITY_LOGS_FILE = 'data/activity_logs.json'
+# MongoDB Database (replacing JSON files)
+# Collections: users, items, exchanges, activity_logs, wishlist
 
-# Create data directory
+# Create data directory for backward compatibility (file uploads, etc.)
 os.makedirs('data', exist_ok=True)
 
-def load_data(filename):
-    try:
-        with open(filename, 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
+# Legacy functions - now using MongoDB
+def load_data(collection_name):
+    """Load data from MongoDB collection (replaces JSON file loading)"""
+    return find_documents(collection_name)
 
-def save_data(filename, data):
-    with open(filename, 'w') as f:
-        json.dump(data, f, indent=2)
+def save_data(collection_name, data):
+    """Save data to MongoDB collection (replaces JSON file saving)"""
+    # This function is deprecated - use insert_document, update_document instead
+    pass
 
-def get_user_by_email(email):
-    users = load_data(USERS_FILE)
-    return next((user for user in users if user['email'] == email), None)
+# get_user_by_email is now imported from database.py
 
-def get_user_by_id(user_id):
-    users = load_data(USERS_FILE)
-    return next((user for user in users if user['id'] == user_id), None)
+# get_user_by_id is now imported from database.py
 
 @app.context_processor
 def inject_user():
@@ -64,7 +65,6 @@ def inject_user():
 def log_activity(user_id, action, details, ip_address=None):
     """Log user activity for admin monitoring"""
     try:
-        logs = load_data(ACTIVITY_LOGS_FILE)
         new_log = {
             'id': str(uuid.uuid4()),
             'user_id': user_id,
@@ -74,27 +74,22 @@ def log_activity(user_id, action, details, ip_address=None):
             'timestamp': datetime.now().isoformat(),
             'user_agent': request.headers.get('User-Agent', 'Unknown') if request else 'Unknown'
         }
-        logs.append(new_log)
-        save_data(ACTIVITY_LOGS_FILE, logs)
+        insert_document('activity_logs', new_log)
         return True
     except Exception as e:
         print(f"Failed to log activity: {str(e)}")
         return False
 
-def get_user_activities(user_id, limit=50):
-    """Get recent activities for a specific user"""
-    logs = load_data(ACTIVITY_LOGS_FILE)
-    user_logs = [log for log in logs if log['user_id'] == user_id]
-    return sorted(user_logs, key=lambda x: x['timestamp'], reverse=True)[:limit]
+# get_user_activities is now imported from database.py
 
 def get_all_activities(limit=100):
     """Get recent activities for all users"""
-    logs = load_data(ACTIVITY_LOGS_FILE)
-    return sorted(logs, key=lambda x: x['timestamp'], reverse=True)[:limit]
+    activities = find_documents('activity_logs')
+    return sorted(activities, key=lambda x: x['timestamp'], reverse=True)[:limit]
 
 def get_activity_stats():
     """Get activity statistics for admin dashboard"""
-    logs = load_data(ACTIVITY_LOGS_FILE)
+    logs = find_documents('activity_logs')
     today = datetime.now().date()
 
     stats = {
@@ -572,8 +567,8 @@ def send_points_update_email(user, points_change, reason):
 
 @app.route('/')
 def home():
-    items = load_data(ITEMS_FILE)
-    # Get latest 6 items for homepage
+    # Get latest 6 available items for homepage
+    items = find_documents('items', {'status': 'available'})
     latest_items = sorted(items, key=lambda x: x['created_at'], reverse=True)[:6]
     return render_template('index.html', items=latest_items)
 
@@ -592,7 +587,6 @@ def register():
             flash('Email already exists! Please use a different email.', 'error')
             return render_template('register.html')
 
-        users = load_data(USERS_FILE)
         new_user = {
             'id': str(uuid.uuid4()),
             'email': email,
@@ -602,8 +596,7 @@ def register():
             'created_at': datetime.now().isoformat(),
             'is_admin': False
         }
-        users.append(new_user)
-        save_data(USERS_FILE, users)
+        insert_document('users', new_user)
 
         # Log activity
         log_activity(new_user['id'], 'REGISTER', f"New user {name} registered with email {email}")
@@ -662,11 +655,8 @@ def profile():
         flash('User not found!', 'error')
         return redirect(url_for('home'))
 
-    items = load_data(ITEMS_FILE)
-    user_items = [item for item in items if item['user_id'] == user['id']]
-
-    exchanges = load_data(EXCHANGES_FILE)
-    user_exchanges = [ex for ex in exchanges if ex['requester_id'] == user['id'] or ex['owner_id'] == user['id']]
+    user_items = get_user_items(user['id'])
+    user_exchanges = get_user_exchanges(user['id'])
 
     return render_template('profile.html', user=user, items=user_items, exchanges=user_exchanges)
 
@@ -674,25 +664,52 @@ def profile():
 def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    
+
     user = get_user_by_id(session['user_id'])
-    items = load_data(ITEMS_FILE)
-    user_items = [item for item in items if item['user_id'] == user['id']]
-    
-    return render_template('dashboard.html', user=user, items=user_items)
+
+    # Get user data from MongoDB
+    user_items = get_user_items(user['id'])
+    user_exchanges = get_user_exchanges(user['id'])
+
+    # Get user activity logs
+    user_activities = get_user_activities(user['id'], 10)
+
+    # Calculate user statistics
+    user_stats = {
+        'total_items': len(user_items),
+        'available_items': len([item for item in user_items if item['status'] == 'available']),
+        'exchanged_items': len([item for item in user_items if item['status'] == 'exchanged']),
+        'total_exchanges': len(user_exchanges),
+        'completed_exchanges': len([ex for ex in user_exchanges if ex['status'] == 'completed']),
+        'points_earned': sum([ex['points'] for ex in user_exchanges if ex['owner_id'] == user['id'] and ex['status'] == 'completed']),
+        'points_spent': sum([ex['points'] for ex in user_exchanges if ex['requester_id'] == user['id'] and ex['status'] == 'completed'])
+    }
+
+    # Get wishlist items
+    user_wishlist = get_user_wishlist(user['id'])
+    user_wishlist_ids = [w['item_id'] for w in user_wishlist]
+    wishlist_items = find_documents('items', {'id': {'$in': user_wishlist_ids}}) if user_wishlist_ids else []
+
+    return render_template('dashboard.html', user=user, items=user_items, exchanges=user_exchanges,
+                         activities=user_activities, stats=user_stats, wishlist_items=wishlist_items)
 
 @app.route('/browse')
 def browse():
-    items = load_data(ITEMS_FILE)
+    # Get all available items from MongoDB
+    query = {'status': 'available'}
     category = request.args.get('category', '')
     search = request.args.get('search', '')
-    
+
     if category:
-        items = [item for item in items if item['category'].lower() == category.lower()]
-    
+        query['category'] = {'$regex': category, '$options': 'i'}
+
     if search:
-        items = [item for item in items if search.lower() in item['title'].lower() or 
-                search.lower() in item['description'].lower()]
+        query['$or'] = [
+            {'title': {'$regex': search, '$options': 'i'}},
+            {'description': {'$regex': search, '$options': 'i'}}
+        ]
+
+    items = find_documents('items', query)
     
     return render_template('browse.html', items=items, category=category, search=search)
 
@@ -719,7 +736,6 @@ def upload_item():
         else:
             image_path = "static/uploads/placeholder.jpg"  # This will trigger the onerror fallback
         
-        items = load_data(ITEMS_FILE)
         new_item = {
             'id': str(uuid.uuid4()),
             'user_id': session['user_id'],
@@ -733,8 +749,7 @@ def upload_item():
             'status': 'available',
             'created_at': datetime.now().isoformat()
         }
-        items.append(new_item)
-        save_data(ITEMS_FILE, items)
+        insert_document('items', new_item)
 
         # Log activity
         log_activity(session['user_id'], 'ITEM_UPLOAD', f"Uploaded item: {title} ({category}) for {points_value} points")
@@ -751,9 +766,8 @@ def upload_item():
 
 @app.route('/item/<item_id>')
 def item_detail(item_id):
-    items = load_data(ITEMS_FILE)
-    item = next((item for item in items if item['id'] == item_id), None)
-    
+    item = find_one_document('items', {'id': item_id})
+
     if not item:
         flash('Item not found!', 'error')
         return redirect(url_for('browse'))
@@ -769,9 +783,8 @@ def request_exchange(item_id):
         return redirect(url_for('login'))
     
     user = get_user_by_id(session['user_id'])
-    items = load_data(ITEMS_FILE)
-    item = next((item for item in items if item['id'] == item_id), None)
-    
+    item = find_one_document('items', {'id': item_id})
+
     if not item or item['user_id'] == user['id']:
         flash('Invalid request!', 'error')
         return redirect(url_for('browse'))
@@ -781,7 +794,6 @@ def request_exchange(item_id):
         return redirect(url_for('item_detail', item_id=item_id))
     
     # Process exchange
-    exchanges = load_data(EXCHANGES_FILE)
     new_exchange = {
         'id': str(uuid.uuid4()),
         'item_id': item_id,
@@ -791,23 +803,14 @@ def request_exchange(item_id):
         'status': 'completed',
         'created_at': datetime.now().isoformat()
     }
-    exchanges.append(new_exchange)
-    save_data(EXCHANGES_FILE, exchanges)
-    
+    insert_document('exchanges', new_exchange)
+
     # Update user points
-    users = load_data(USERS_FILE)
-    for u in users:
-        if u['id'] == user['id']:
-            u['points'] -= item['points_value']
-        elif u['id'] == item['user_id']:
-            u['points'] += item['points_value']
-    save_data(USERS_FILE, users)
-    
+    update_document('users', {'id': user['id']}, {'$inc': {'points': -item['points_value']}})
+    update_document('users', {'id': item['user_id']}, {'$inc': {'points': item['points_value']}})
+
     # Update item status
-    for i in items:
-        if i['id'] == item_id:
-            i['status'] = 'exchanged'
-    save_data(ITEMS_FILE, items)
+    update_document('items', {'id': item_id}, {'$set': {'status': 'exchanged'}})
 
     # Log activity for both users
     log_activity(user['id'], 'ITEM_EXCHANGE_REQUEST', f"Requested exchange for item: {item['title']} (spent {item['points_value']} points)")
@@ -825,6 +828,60 @@ def request_exchange(item_id):
     flash('Exchange completed successfully! Check your email for confirmation.', 'success')
     return redirect(url_for('dashboard'))
 
+@app.route('/wishlist/add/<item_id>')
+def add_to_wishlist(item_id):
+    if 'user_id' not in session:
+        return jsonify({'error': 'Please login first'}), 401
+
+    user = get_user_by_id(session['user_id'])
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    # Check if item exists
+    item = find_one_document('items', {'id': item_id})
+    if not item:
+        return jsonify({'error': 'Item not found'}), 404
+
+    # Check if user owns the item
+    if item['user_id'] == user['id']:
+        return jsonify({'error': 'Cannot add your own item to wishlist'}), 400
+
+    # Check if already in wishlist
+    existing = find_one_document('wishlist', {'user_id': user['id'], 'item_id': item_id})
+    if existing:
+        return jsonify({'error': 'Item already in wishlist'}), 400
+
+    # Add to wishlist
+    new_wishlist_item = {
+        'id': str(uuid.uuid4()),
+        'user_id': user['id'],
+        'item_id': item_id,
+        'created_at': datetime.now().isoformat()
+    }
+    insert_document('wishlist', new_wishlist_item)
+
+    # Log activity
+    log_activity(user['id'], 'WISHLIST_ADD', f"Added item to wishlist: {item['title']}")
+
+    return jsonify({'success': 'Item added to wishlist'})
+
+@app.route('/wishlist/remove/<item_id>')
+def remove_from_wishlist(item_id):
+    if 'user_id' not in session:
+        return jsonify({'error': 'Please login first'}), 401
+
+    user = get_user_by_id(session['user_id'])
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    # Remove from wishlist
+    delete_document('wishlist', {'user_id': user['id'], 'item_id': item_id})
+
+    # Log activity
+    log_activity(user['id'], 'WISHLIST_REMOVE', f"Removed item from wishlist")
+
+    return jsonify({'success': 'Item removed from wishlist'})
+
 @app.route('/admin')
 def admin():
     if 'user_id' not in session:
@@ -840,9 +897,9 @@ def admin():
         flash('Access denied! Admin privileges required.', 'error')
         return redirect(url_for('home'))
 
-    users = load_data(USERS_FILE)
-    items = load_data(ITEMS_FILE)
-    exchanges = load_data(EXCHANGES_FILE)
+    users = find_documents('users')
+    items = find_documents('items')
+    exchanges = find_documents('exchanges')
 
     # Calculate statistics
     total_points = sum(user.get('points', 0) for user in users)
@@ -905,7 +962,7 @@ def admin_api_users():
     if not user or not user.get('is_admin'):
         return jsonify({'error': 'Access denied'}), 403
 
-    users = load_data(USERS_FILE)
+    users = find_documents('users')
     return jsonify({'users': users})
 
 @app.route('/admin/api/user/<user_id>', methods=['DELETE'])
@@ -918,8 +975,7 @@ def admin_delete_user(user_id):
     if not admin_user or not admin_user.get('is_admin'):
         return jsonify({'error': 'Access denied'}), 403
 
-    users = load_data(USERS_FILE)
-    user_to_delete = next((user for user in users if user['id'] == user_id), None)
+    user_to_delete = find_one_document('users', {'id': user_id})
 
     if not user_to_delete:
         return jsonify({'error': 'User not found'}), 404
@@ -928,8 +984,7 @@ def admin_delete_user(user_id):
         return jsonify({'error': 'Cannot delete admin user'}), 400
 
     # Remove user
-    users = [user for user in users if user['id'] != user_id]
-    save_data(USERS_FILE, users)
+    delete_document('users', {'id': user_id})
 
     # Log admin action
     log_activity(admin_user['id'], 'ADMIN_DELETE_USER', f"Deleted user: {user_to_delete['name']} ({user_to_delete['email']})")
@@ -946,19 +1001,14 @@ def admin_toggle_user_admin(user_id):
     if not admin_user or not admin_user.get('is_admin'):
         return jsonify({'error': 'Access denied'}), 403
 
-    users = load_data(USERS_FILE)
-    user_to_update = None
-
-    for user in users:
-        if user['id'] == user_id:
-            user['is_admin'] = not user.get('is_admin', False)
-            user_to_update = user
-            break
+    user_to_update = find_one_document('users', {'id': user_id})
 
     if not user_to_update:
         return jsonify({'error': 'User not found'}), 404
 
-    save_data(USERS_FILE, users)
+    new_admin_status = not user_to_update.get('is_admin', False)
+    update_document('users', {'id': user_id}, {'$set': {'is_admin': new_admin_status}})
+    user_to_update['is_admin'] = new_admin_status
 
     # Log admin action
     action = 'ADMIN_GRANT_ADMIN' if user_to_update['is_admin'] else 'ADMIN_REVOKE_ADMIN'
@@ -976,15 +1026,13 @@ def admin_delete_item(item_id):
     if not admin_user or not admin_user.get('is_admin'):
         return jsonify({'error': 'Access denied'}), 403
 
-    items = load_data(ITEMS_FILE)
-    item_to_delete = next((item for item in items if item['id'] == item_id), None)
+    item_to_delete = find_one_document('items', {'id': item_id})
 
     if not item_to_delete:
         return jsonify({'error': 'Item not found'}), 404
 
     # Remove item
-    items = [item for item in items if item['id'] != item_id]
-    save_data(ITEMS_FILE, items)
+    delete_document('items', {'id': item_id})
 
     # Log admin action
     log_activity(admin_user['id'], 'ADMIN_DELETE_ITEM', f"Deleted item: {item_to_delete['title']} by user {item_to_delete['user_id']}")
@@ -1001,9 +1049,9 @@ def admin_api_stats():
     if not user or not user.get('is_admin'):
         return jsonify({'error': 'Access denied'}), 403
 
-    users = load_data(USERS_FILE)
-    items = load_data(ITEMS_FILE)
-    exchanges = load_data(EXCHANGES_FILE)
+    users = find_documents('users')
+    items = find_documents('items')
+    exchanges = find_documents('exchanges')
     activity_stats = get_activity_stats()
 
     stats = {
@@ -1018,5 +1066,38 @@ def admin_api_stats():
 
     return jsonify(stats)
 
+@app.route('/health')
+def health_check():
+    """Health check endpoint for monitoring"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'version': '1.0.0'
+    })
+
+@app.route('/api/status')
+def api_status():
+    """API status endpoint"""
+    try:
+        # Check if database is accessible
+        users = find_documents('users')
+        items = find_documents('items')
+
+        return jsonify({
+            'status': 'operational',
+            'database': 'connected',
+            'users_count': len(users),
+            'items_count': len(items),
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.getenv('PORT', 5000))
+    debug = os.getenv('FLASK_ENV', 'development') == 'development'
+    app.run(debug=debug, host='0.0.0.0', port=port)

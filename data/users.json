@@ -58,7 +58,7 @@
     "email": "mkbharvad534@gmail.com",
     "password": "pbkdf2:sha256:600000$jDa8eTQavqTLKLFt$aeb193830cbdb56b41bf9d13036ff8d9bdab0223aae7aa7b7c3ea15e93052d18",
     "name": "Meet patel",
-    "points": 20,
+    "points": 10,
     "created_at": "2025-07-12T12:04:23.201866",
     "is_admin": false
   },
@@ -69,6 +69,15 @@
     "name": "Mayur Bharvad",
     "points": 100,
     "created_at": "2025-07-12T12:44:04.387290",
+    "is_admin": false
+  },
+  {
+    "id": "41bc4b4a-1036-4f72-8766-ceec055f99c8",
+    "email": "mayur.k.bharvad@gmail.com",
+    "password": "pbkdf2:sha256:600000$EKi9H6IivACKmLhz$7181e63139c8ff80cb82a5483a5504cdc7bce7ac2e011da2733ae296aa055c73",
+    "name": "Arish",
+    "points": 110,
+    "created_at": "2025-07-12T14:27:11.631670",
     "is_admin": false
   }
 ]

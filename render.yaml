@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: rewear-app
+    env: python
+    plan: free
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: gunicorn --bind 0.0.0.0:$PORT app:app --workers 1 --timeout 120
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: MAIL_SERVER
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: 587
+      - key: MAIL_USE_TLS
+        value: "True"
+      - key: MAIL_USE_SSL
+        value: "False"
+      - key: MAIL_USERNAME
+        value: mkbharvad534@gmail.com
+      - key: MAIL_PASSWORD
+        value: dwtp fmiq miyl ccvq
+      - key: MAIL_DEFAULT_SENDER
+        value: mkbharvad534@gmail.com
+      - key: UPLOAD_FOLDER
+        value: static/uploads
+      - key: MAX_CONTENT_LENGTH
+        value: 16777216
+      - key: DATABASE_URL
+        value: mongodb+srv://mkbharvad8080:Mkb%408080@cluster0.a82h2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

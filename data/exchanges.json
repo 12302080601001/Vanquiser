@@ -43,5 +43,14 @@
     "points": 20,
     "status": "completed",
     "created_at": "2025-07-12T13:10:51.840309"
+  },
+  {
+    "id": "0cfb9a39-f194-46ff-877b-6922ec57a78f",
+    "item_id": "e446bb31-ff8c-4a03-9e60-20ca3a2fa2f4",
+    "requester_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "owner_id": "41bc4b4a-1036-4f72-8766-ceec055f99c8",
+    "points": 10,
+    "status": "completed",
+    "created_at": "2025-07-12T14:50:38.545501"
   }
 ]
