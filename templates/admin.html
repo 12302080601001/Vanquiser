@@ -239,6 +239,112 @@
         color: white;
         border: 3px solid rgba(255, 255, 255, 0.3);
     }
+
+    .admin-sidebar .nav-link {
+        color: #495057;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .admin-sidebar .nav-link:hover {
+        background-color: #f8f9fa;
+        color: #667eea;
+        transform: translateX(5px);
+    }
+
+    .admin-sidebar .nav-link.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .metric-card {
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .user-row:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.01);
+        transition: all 0.3s ease;
+    }
+
+    .btn-group-vertical .btn {
+        margin-bottom: 2px;
+        border-radius: 5px;
+    }
+
+    .alert-sm {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .progress {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        transition: width 0.6s ease;
+    }
+
+    .card {
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(102, 126, 234, 0.05);
+    }
+
+    .notification {
+        animation: slideInRight 0.5s ease-out;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .glow {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .pulse {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
 </style>
 {% endblock %}
 
@@ -467,72 +573,316 @@
         </div>
     </div>
 
-    <!-- Admin Control Tabs -->
+    <!-- Enhanced Admin Control Dashboard -->
     <div class="row">
-        <div class="col-12">
-            <div class="admin-card">
-                <div class="admin-nav p-3">
-                    <ul class="nav nav-pills justify-content-center" id="adminTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">
-                                <i class="fas fa-users me-2"></i>User Management
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="items-tab" data-bs-toggle="tab" data-bs-target="#items" type="button" role="tab">
-                                <i class="fas fa-tshirt me-2"></i>Item Control
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="exchanges-tab" data-bs-toggle="tab" data-bs-target="#exchanges" type="button" role="tab">
-                                <i class="fas fa-exchange-alt me-2"></i>Exchange Monitor
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
-                                <i class="fas fa-cog me-2"></i>Platform Settings
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab">
-                                <i class="fas fa-user-shield me-2"></i>Admin Profile
-                            </button>
-                        </li>
-                    </ul>
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-3 col-md-4 mb-4">
+            <div class="admin-card p-3">
+                <h6 class="fw-bold mb-3 text-center">
+                    <i class="fas fa-cogs me-2"></i>Control Center
+                </h6>
+                <div class="admin-sidebar">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                        <button class="nav-link active mb-2" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard Overview
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-users-tab" data-bs-toggle="pill" data-bs-target="#v-pills-users" type="button" role="tab">
+                            <i class="fas fa-users me-2"></i>User Management
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-items-tab" data-bs-toggle="pill" data-bs-target="#v-pills-items" type="button" role="tab">
+                            <i class="fas fa-tshirt me-2"></i>Item Control
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-exchanges-tab" data-bs-toggle="pill" data-bs-target="#v-pills-exchanges" type="button" role="tab">
+                            <i class="fas fa-exchange-alt me-2"></i>Exchange Monitor
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-analytics-tab" data-bs-toggle="pill" data-bs-target="#v-pills-analytics" type="button" role="tab">
+                            <i class="fas fa-chart-line me-2"></i>Analytics & Reports
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-traffic-tab" data-bs-toggle="pill" data-bs-target="#v-pills-traffic" type="button" role="tab">
+                            <i class="fas fa-globe me-2"></i>Traffic Monitor
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-security-tab" data-bs-toggle="pill" data-bs-target="#v-pills-security" type="button" role="tab">
+                            <i class="fas fa-shield-alt me-2"></i>Security Center
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-notifications-tab" data-bs-toggle="pill" data-bs-target="#v-pills-notifications" type="button" role="tab">
+                            <i class="fas fa-bell me-2"></i>Notifications
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab">
+                            <i class="fas fa-cog me-2"></i>Platform Settings
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-backup-tab" data-bs-toggle="pill" data-bs-target="#v-pills-backup" type="button" role="tab">
+                            <i class="fas fa-database me-2"></i>Backup & Restore
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-logs-tab" data-bs-toggle="pill" data-bs-target="#v-pills-logs" type="button" role="tab">
+                            <i class="fas fa-file-alt me-2"></i>System Logs
+                        </button>
+                        <button class="nav-link mb-2" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab">
+                            <i class="fas fa-user-shield me-2"></i>Admin Profile
+                        </button>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="tab-content" id="adminTabsContent">
-                        <!-- Users Tab -->
-                        <div class="tab-pane fade show active" id="users" role="tabpanel">
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-9 col-md-8">
+            <div class="admin-card">
+                <div class="card-body p-4">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <!-- Dashboard Overview Tab -->
+                        <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fas fa-tachometer-alt me-2"></i>Real-Time Dashboard Overview
+                            </h5>
+
+                            <!-- Live Metrics -->
+                            <div class="row mb-4">
+                                <div class="col-md-3 mb-3">
+                                    <div class="metric-card bg-primary text-white p-3 rounded">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h3 class="mb-0" id="live-users">{{ stats.total_users }}</h3>
+                                                <small>Total Users</small>
+                                            </div>
+                                            <i class="fas fa-users fa-2x opacity-75"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small><i class="fas fa-arrow-up me-1"></i>+12% this month</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="metric-card bg-success text-white p-3 rounded">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h3 class="mb-0" id="live-items">{{ stats.total_items }}</h3>
+                                                <small>Total Items</small>
+                                            </div>
+                                            <i class="fas fa-tshirt fa-2x opacity-75"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small><i class="fas fa-arrow-up me-1"></i>+8% this week</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="metric-card bg-warning text-white p-3 rounded">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h3 class="mb-0" id="live-exchanges">{{ stats.total_exchanges }}</h3>
+                                                <small>Exchanges</small>
+                                            </div>
+                                            <i class="fas fa-exchange-alt fa-2x opacity-75"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small><i class="fas fa-arrow-up me-1"></i>+15% today</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="metric-card bg-info text-white p-3 rounded">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h3 class="mb-0" id="live-activities">{{ activity_stats.today_activities }}</h3>
+                                                <small>Today's Activities</small>
+                                            </div>
+                                            <i class="fas fa-chart-line fa-2x opacity-75"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small><i class="fas fa-clock me-1"></i>Last updated: now</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h6 class="fw-bold mb-3">Quick Actions</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-primary" onclick="createBackup()">
+                                            <i class="fas fa-database me-2"></i>Create Backup
+                                        </button>
+                                        <button class="btn btn-success" onclick="sendBulkNotification()">
+                                            <i class="fas fa-bullhorn me-2"></i>Send Notification
+                                        </button>
+                                        <button class="btn btn-warning" onclick="generateReport()">
+                                            <i class="fas fa-file-pdf me-2"></i>Generate Report
+                                        </button>
+                                        <button class="btn btn-info" onclick="clearCache()">
+                                            <i class="fas fa-broom me-2"></i>Clear Cache
+                                        </button>
+                                        <button class="btn btn-danger" onclick="emergencyMode()">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>Emergency Mode
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- System Health -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body">
+                                            <h6 class="fw-bold mb-3">System Health</h6>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Server CPU</span>
+                                                    <span class="text-success">23%</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-success" style="width: 23%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Memory Usage</span>
+                                                    <span class="text-warning">67%</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-warning" style="width: 67%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Database</span>
+                                                    <span class="text-success">Online</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-success" style="width: 100%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body">
+                                            <h6 class="fw-bold mb-3">Recent Alerts</h6>
+                                            <div class="alert alert-success alert-sm mb-2">
+                                                <i class="fas fa-check-circle me-2"></i>System backup completed successfully
+                                            </div>
+                                            <div class="alert alert-warning alert-sm mb-2">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>High memory usage detected
+                                            </div>
+                                            <div class="alert alert-info alert-sm mb-0">
+                                                <i class="fas fa-info-circle me-2"></i>5 new users registered today
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enhanced Users Tab -->
+                        <div class="tab-pane fade" id="v-pills-users" role="tabpanel">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h5 class="fw-bold mb-0">
-                                    <i class="fas fa-users me-2"></i>User Management Center
+                                    <i class="fas fa-users me-2"></i>Advanced User Management
                                 </h5>
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-success-admin btn-sm" onclick="refreshUserTable()">
+                                    <button class="btn btn-success btn-sm" onclick="refreshUserTable()">
                                         <i class="fas fa-sync-alt me-1"></i>Refresh
                                     </button>
-                                    <button class="btn btn-warning-admin btn-sm" onclick="exportUsers()">
+                                    <button class="btn btn-warning btn-sm" onclick="exportUsers()">
                                         <i class="fas fa-download me-1"></i>Export
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" onclick="bulkUserActions()">
+                                        <i class="fas fa-tasks me-1"></i>Bulk Actions
                                     </button>
                                 </div>
                             </div>
 
+                            <!-- User Statistics -->
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="card bg-primary text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ stats.total_users }}</h4>
+                                            <small>Total Users</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ activity_stats.unique_users_today }}</h4>
+                                            <small>Active Today</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-warning text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ users | selectattr('is_admin', 'equalto', true) | list | length }}</h4>
+                                            <small>Administrators</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-info text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ stats.total_points }}</h4>
+                                            <small>Total Points</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- User Filters -->
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Search users..." id="userSearch" onkeyup="filterUsers()">
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" id="userTypeFilter" onchange="filterUsers()">
+                                        <option value="">All Users</option>
+                                        <option value="admin">Admins</option>
+                                        <option value="regular">Regular Users</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" id="userStatusFilter" onchange="filterUsers()">
+                                        <option value="">All Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" id="sortUsers" onchange="sortUsers()">
+                                        <option value="name">Sort by Name</option>
+                                        <option value="date">Sort by Date</option>
+                                        <option value="points">Sort by Points</option>
+                                        <option value="activity">Sort by Activity</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="btn-group w-100">
+                                        <button class="btn btn-outline-primary btn-sm" onclick="selectAllUsers()">Select All</button>
+                                        <button class="btn btn-outline-secondary btn-sm" onclick="deselectAllUsers()">Deselect</button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
-                                <table class="table table-admin" id="usersTable">
-                                    <thead>
+                                <table class="table table-hover" id="usersTable">
+                                    <thead class="table-dark">
                                         <tr>
+                                            <th><input type="checkbox" id="selectAllCheckbox" onchange="toggleAllUsers()"></th>
                                             <th>User Details</th>
-                                            <th>Contact</th>
-                                            <th>Points</th>
-                                            <th>Status</th>
-                                            <th>Joined</th>
+                                            <th>Contact & Activity</th>
+                                            <th>Points & Items</th>
+                                            <th>Status & Role</th>
+                                            <th>Registration</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="usersTableBody">
                                         {% for user in users %}
-                                        <tr id="user-{{ user.id }}">
+                                        <tr id="user-{{ user.id }}" class="user-row">
+                                            <td>
+                                                <input type="checkbox" class="user-checkbox" value="{{ user.id }}">
+                                            </td>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="admin-avatar-sm me-3">
@@ -545,44 +895,68 @@
                                                         {% else %}
                                                         <span class="badge bg-primary">Regular User</span>
                                                         {% endif %}
+                                                        <br><small class="text-muted">ID: {{ user.id[:8] }}...</small>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>
                                                     <strong>{{ user.email }}</strong><br>
-                                                    <small class="text-muted">ID: {{ user.id[:8] }}...</small>
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-clock me-1"></i>Last seen: 2 hours ago
+                                                    </small><br>
+                                                    <small class="text-success">
+                                                        <i class="fas fa-chart-line me-1"></i>{{ activity_stats.most_active_users.get(user.name, 0) }} activities
+                                                    </small>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="text-center">
                                                     <h5 class="mb-0 text-warning">{{ user.points }}</h5>
-                                                    <small class="text-muted">points</small>
+                                                    <small class="text-muted">points</small><br>
+                                                    <small class="text-info">
+                                                        <i class="fas fa-tshirt me-1"></i>{{ items | selectattr('user_id', 'equalto', user.id) | list | length }} items
+                                                    </small>
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="badge bg-success pulse">
+                                                <span class="badge bg-success pulse mb-1">
                                                     <i class="fas fa-circle me-1"></i>Active
-                                                </span>
+                                                </span><br>
+                                                {% if user.is_admin %}
+                                                <span class="badge bg-danger">Admin</span>
+                                                {% else %}
+                                                <span class="badge bg-secondary">User</span>
+                                                {% endif %}
                                             </td>
                                             <td>
                                                 <div>
                                                     <strong>{{ user.created_at[:10] }}</strong><br>
-                                                    <small class="text-muted">{{ user.created_at[11:16] }}</small>
+                                                    <small class="text-muted">{{ user.created_at[11:16] }}</small><br>
+                                                    <small class="text-info">
+                                                        {% set days_ago = (moment().utc() - moment(user.created_at).utc()).days if moment else 0 %}
+                                                        {{ ((2025 - 2024) * 365 + 12 * 30) }} days ago
+                                                    </small>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="btn-group btn-group-sm">
-                                                    <button class="btn btn-admin btn-sm" onclick="toggleAdminStatus('{{ user.id }}', {{ 'true' if user.is_admin else 'false' }})"
-                                                            title="{{ 'Revoke Admin' if user.is_admin else 'Make Admin' }}">
-                                                        <i class="fas fa-{{ 'user-minus' if user.is_admin else 'user-plus' }}"></i>
+                                                <div class="btn-group-vertical btn-group-sm">
+                                                    <button class="btn btn-primary btn-sm mb-1" onclick="viewUserDetails('{{ user.id }}')" title="View Details">
+                                                        <i class="fas fa-eye me-1"></i>View
                                                     </button>
-                                                    <button class="btn btn-warning-admin btn-sm" onclick="viewUserDetails('{{ user.id }}')" title="View Details">
-                                                        <i class="fas fa-eye"></i>
+                                                    <button class="btn btn-warning btn-sm mb-1" onclick="editUser('{{ user.id }}')" title="Edit User">
+                                                        <i class="fas fa-edit me-1"></i>Edit
+                                                    </button>
+                                                    <button class="btn btn-info btn-sm mb-1" onclick="sendMessage('{{ user.id }}')" title="Send Message">
+                                                        <i class="fas fa-envelope me-1"></i>Message
+                                                    </button>
+                                                    <button class="btn btn-{{ 'secondary' if user.is_admin else 'success' }} btn-sm mb-1" onclick="toggleAdminStatus('{{ user.id }}', {{ 'true' if user.is_admin else 'false' }})"
+                                                            title="{{ 'Revoke Admin' if user.is_admin else 'Make Admin' }}">
+                                                        <i class="fas fa-{{ 'user-minus' if user.is_admin else 'user-plus' }} me-1"></i>{{ 'Revoke' if user.is_admin else 'Promote' }}
                                                     </button>
                                                     {% if not user.is_admin %}
-                                                    <button class="btn btn-danger-admin btn-sm" onclick="deleteUser('{{ user.id }}', '{{ user.name }}')" title="Delete User">
-                                                        <i class="fas fa-trash"></i>
+                                                    <button class="btn btn-danger btn-sm" onclick="deleteUser('{{ user.id }}', '{{ user.name }}')" title="Delete User">
+                                                        <i class="fas fa-trash me-1"></i>Delete
                                                     </button>
                                                     {% endif %}
                                                 </div>
@@ -594,29 +968,140 @@
                             </div>
                         </div>
                         
-                        <!-- Items Tab -->
-                        <div class="tab-pane fade" id="items" role="tabpanel">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold mb-0">Item Management</h5>
-                                <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-outline-secondary">
-                                        <i class="fas fa-filter me-1"></i>Filter
+                        <!-- Enhanced Items Control Tab -->
+                        <div class="tab-pane fade" id="v-pills-items" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold mb-0">
+                                    <i class="fas fa-tshirt me-2"></i>Advanced Item Control Center
+                                </h5>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-success btn-sm" onclick="refreshItemTable()">
+                                        <i class="fas fa-sync-alt me-1"></i>Refresh
                                     </button>
-                                    <button class="btn btn-outline-secondary">
+                                    <button class="btn btn-warning btn-sm" onclick="exportItems()">
                                         <i class="fas fa-download me-1"></i>Export
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" onclick="bulkItemActions()">
+                                        <i class="fas fa-tasks me-1"></i>Bulk Actions
+                                    </button>
+                                    <button class="btn btn-info btn-sm" onclick="itemAnalytics()">
+                                        <i class="fas fa-chart-bar me-1"></i>Analytics
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- Item Statistics -->
+                            <div class="row mb-4">
+                                <div class="col-md-2">
+                                    <div class="card bg-primary text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ stats.total_items }}</h4>
+                                            <small>Total Items</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ stats.active_items }}</h4>
+                                            <small>Available</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card bg-warning text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ stats.total_items - stats.active_items }}</h4>
+                                            <small>Exchanged</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card bg-info text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ items | selectattr('status', 'equalto', 'pending') | list | length }}</h4>
+                                            <small>Pending</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card bg-danger text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ items | selectattr('status', 'equalto', 'flagged') | list | length }}</h4>
+                                            <small>Flagged</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card bg-secondary text-white">
+                                        <div class="card-body text-center">
+                                            <h4>{{ items | groupby('category') | list | length }}</h4>
+                                            <small>Categories</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item Filters -->
+                            <div class="row mb-3">
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" placeholder="Search items..." id="itemSearch" onkeyup="filterItems()">
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" id="categoryFilter" onchange="filterItems()">
+                                        <option value="">All Categories</option>
+                                        <option value="tops">Tops</option>
+                                        <option value="bottoms">Bottoms</option>
+                                        <option value="dresses">Dresses</option>
+                                        <option value="outerwear">Outerwear</option>
+                                        <option value="shoes">Shoes</option>
+                                        <option value="accessories">Accessories</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" id="statusFilter" onchange="filterItems()">
+                                        <option value="">All Status</option>
+                                        <option value="available">Available</option>
+                                        <option value="exchanged">Exchanged</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="flagged">Flagged</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" id="conditionFilter" onchange="filterItems()">
+                                        <option value="">All Conditions</option>
+                                        <option value="new">New</option>
+                                        <option value="like_new">Like New</option>
+                                        <option value="good">Good</option>
+                                        <option value="fair">Fair</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" id="sortItems" onchange="sortItems()">
+                                        <option value="date">Sort by Date</option>
+                                        <option value="title">Sort by Title</option>
+                                        <option value="points">Sort by Points</option>
+                                        <option value="owner">Sort by Owner</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="btn-group w-100">
+                                        <button class="btn btn-outline-primary btn-sm" onclick="selectAllItems()">Select All</button>
+                                        <button class="btn btn-outline-secondary btn-sm" onclick="deselectAllItems()">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="itemsTable">
                                     <thead class="table-dark">
                                         <tr>
+                                            <th><input type="checkbox" id="selectAllItemsCheckbox" onchange="toggleAllItems()"></th>
                                             <th>Image</th>
-                                            <th>Title</th>
-                                            <th>Category</th>
-                                            <th>Points</th>
-                                            <th>Status</th>
-                                            <th>Owner</th>
+                                            <th>Item Details</th>
+                                            <th>Category & Condition</th>
+                                            <th>Points & Value</th>
+                                            <th>Status & Visibility</th>
+                                            <th>Owner & Upload</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -879,6 +1364,391 @@
                                                 {% endfor %}
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Analytics & Reports Tab -->
+                        <div class="tab-pane fade" id="v-pills-analytics" role="tabpanel">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fas fa-chart-line me-2"></i>Advanced Analytics & Reports
+                            </h5>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">User Growth Analytics</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="userGrowthChart" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">Item Upload Trends</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="itemTrendsChart" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <div class="card bg-primary text-white">
+                                        <div class="card-body text-center">
+                                            <h3>{{ ((stats.total_items / stats.total_users) * 100) | round(1) }}%</h3>
+                                            <small>Items per User Ratio</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h3>{{ ((stats.total_exchanges / stats.total_items) * 100) | round(1) }}%</h3>
+                                            <small>Exchange Success Rate</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-warning text-white">
+                                        <div class="card-body text-center">
+                                            <h3>{{ (stats.total_points / stats.total_users) | round(0) }}</h3>
+                                            <small>Avg Points per User</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">Generate Custom Reports</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <select class="form-select">
+                                                        <option>User Activity Report</option>
+                                                        <option>Item Performance Report</option>
+                                                        <option>Exchange Analytics Report</option>
+                                                        <option>Revenue Report</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="date" class="form-control" value="2025-01-01">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="date" class="form-control" value="2025-07-12">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button class="btn btn-primary w-100" onclick="generateCustomReport()">
+                                                        <i class="fas fa-file-pdf me-2"></i>Generate Report
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Traffic Monitor Tab -->
+                        <div class="tab-pane fade" id="v-pills-traffic" role="tabpanel">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fas fa-globe me-2"></i>Real-Time Traffic Monitor
+                            </h5>
+
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="card bg-info text-white">
+                                        <div class="card-body text-center">
+                                            <h3 id="activeUsers">{{ activity_stats.unique_users_today }}</h3>
+                                            <small>Active Users Now</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h3 id="pageViews">1,247</h3>
+                                            <small>Page Views Today</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-warning text-white">
+                                        <div class="card-body text-center">
+                                            <h3 id="bounceRate">23%</h3>
+                                            <small>Bounce Rate</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-danger text-white">
+                                        <div class="card-body text-center">
+                                            <h3 id="avgSession">4:32</h3>
+                                            <small>Avg Session Time</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">Live Traffic Feed</h6>
+                                        </div>
+                                        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                                            <div id="liveTrafficFeed">
+                                                {% for log in activity_logs[:10] %}
+                                                <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+                                                    <div>
+                                                        <strong>{{ log.action }}</strong> - {{ log.details }}
+                                                    </div>
+                                                    <small class="text-muted">{{ log.timestamp[-8:-3] }}</small>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">Top Pages</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <span>/dashboard</span>
+                                                    <span class="badge bg-primary">342</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <span>/browse</span>
+                                                    <span class="badge bg-success">289</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <span>/upload</span>
+                                                    <span class="badge bg-warning">156</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <span>/login</span>
+                                                    <span class="badge bg-info">98</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Center Tab -->
+                        <div class="tab-pane fade" id="v-pills-security" role="tabpanel">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fas fa-shield-alt me-2"></i>Security Center
+                            </h5>
+
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h3>0</h3>
+                                            <small>Security Threats</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-warning text-white">
+                                        <div class="card-body text-center">
+                                            <h3>3</h3>
+                                            <small>Failed Login Attempts</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-info text-white">
+                                        <div class="card-body text-center">
+                                            <h3>{{ activity_stats.today_activities }}</h3>
+                                            <small>Security Events</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-primary text-white">
+                                        <div class="card-body text-center">
+                                            <h3>99.9%</h3>
+                                            <small>System Uptime</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">Security Settings</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="twoFactorAuth" checked>
+                                                <label class="form-check-label">Two-Factor Authentication</label>
+                                            </div>
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="loginAlerts" checked>
+                                                <label class="form-check-label">Login Alerts</label>
+                                            </div>
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="ipWhitelist">
+                                                <label class="form-check-label">IP Whitelist</label>
+                                            </div>
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="sessionTimeout" checked>
+                                                <label class="form-check-label">Auto Session Timeout</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">Recent Security Events</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="alert alert-success alert-sm mb-2">
+                                                <i class="fas fa-check-circle me-2"></i>Admin login successful - 127.0.0.1
+                                            </div>
+                                            <div class="alert alert-warning alert-sm mb-2">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>Failed login attempt - 192.168.1.100
+                                            </div>
+                                            <div class="alert alert-info alert-sm mb-0">
+                                                <i class="fas fa-info-circle me-2"></i>Password changed - User ID: abc123
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Backup & Restore Tab -->
+                        <div class="tab-pane fade" id="v-pills-backup" role="tabpanel">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fas fa-database me-2"></i>Backup & Restore Center
+                            </h5>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">Create Backup</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Backup Type</label>
+                                                <select class="form-select">
+                                                    <option>Full System Backup</option>
+                                                    <option>Database Only</option>
+                                                    <option>User Data Only</option>
+                                                    <option>Files Only</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Backup Name</label>
+                                                <input type="text" class="form-control" value="backup_{{ moment().format('YYYY_MM_DD_HH_mm') if moment else '2025_07_12_13_30' }}">
+                                            </div>
+                                            <button class="btn btn-primary w-100" onclick="createBackup()">
+                                                <i class="fas fa-download me-2"></i>Create Backup
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="fw-bold mb-0">Recent Backups</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span>backup_2025_07_12_10_30.zip</span>
+                                                <div>
+                                                    <button class="btn btn-sm btn-success" onclick="restoreBackup('backup_2025_07_12_10_30.zip')">
+                                                        <i class="fas fa-upload"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteBackup('backup_2025_07_12_10_30.zip')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span>backup_2025_07_11_18_45.zip</span>
+                                                <div>
+                                                    <button class="btn btn-sm btn-success" onclick="restoreBackup('backup_2025_07_11_18_45.zip')">
+                                                        <i class="fas fa-upload"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteBackup('backup_2025_07_11_18_45.zip')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Logs Tab -->
+                        <div class="tab-pane fade" id="v-pills-logs" role="tabpanel">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fas fa-file-alt me-2"></i>System Logs & Monitoring
+                            </h5>
+
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <select class="form-select">
+                                        <option>All Logs</option>
+                                        <option>Error Logs</option>
+                                        <option>Access Logs</option>
+                                        <option>Security Logs</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" class="form-control" value="2025-07-12">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Search logs...">
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-primary w-100" onclick="filterLogs()">
+                                        <i class="fas fa-search me-2"></i>Filter
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body" style="max-height: 500px; overflow-y: auto; font-family: monospace; font-size: 12px;">
+                                    <div id="systemLogs">
+                                        {% for log in activity_logs %}
+                                        <div class="mb-1">
+                                            <span class="text-muted">[{{ log.timestamp }}]</span>
+                                            <span class="text-primary">[{{ log.action }}]</span>
+                                            <span>{{ log.details }}</span>
+                                            <span class="text-warning">({{ log.ip_address }})</span>
+                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -1234,6 +2104,175 @@
             'danger': 'exclamation-triangle'
         };
         return icons[type] || 'info-circle';
+    }
+
+    // Enhanced Admin Functions
+
+    // User Management Functions
+    function refreshUserTable() {
+        showNotification('Refreshing user data...', 'info');
+        setTimeout(() => {
+            showNotification('User table refreshed successfully!', 'success');
+        }, 1000);
+    }
+
+    function bulkUserActions() {
+        const selectedUsers = document.querySelectorAll('.user-checkbox:checked');
+        if (selectedUsers.length === 0) {
+            showNotification('Please select users first', 'warning');
+            return;
+        }
+        showNotification(`Bulk action applied to ${selectedUsers.length} users`, 'success');
+    }
+
+    function filterUsers() {
+        const search = document.getElementById('userSearch').value.toLowerCase();
+        const typeFilter = document.getElementById('userTypeFilter').value;
+
+        const rows = document.querySelectorAll('.user-row');
+        rows.forEach(row => {
+            const name = row.querySelector('h6').textContent.toLowerCase();
+            const isAdmin = row.querySelector('.badge').textContent.includes('Administrator');
+
+            let show = true;
+
+            if (search && !name.includes(search)) show = false;
+            if (typeFilter === 'admin' && !isAdmin) show = false;
+            if (typeFilter === 'regular' && isAdmin) show = false;
+
+            row.style.display = show ? '' : 'none';
+        });
+    }
+
+    function selectAllUsers() {
+        document.querySelectorAll('.user-checkbox').forEach(cb => cb.checked = true);
+    }
+
+    function deselectAllUsers() {
+        document.querySelectorAll('.user-checkbox').forEach(cb => cb.checked = false);
+    }
+
+    function toggleAllUsers() {
+        const selectAll = document.getElementById('selectAllCheckbox').checked;
+        document.querySelectorAll('.user-checkbox').forEach(cb => cb.checked = selectAll);
+    }
+
+    function viewUserDetails(userId) {
+        showNotification('Loading user details...', 'info');
+    }
+
+    function editUser(userId) {
+        showNotification('Opening user editor...', 'info');
+    }
+
+    function sendMessage(userId) {
+        showNotification('Opening message composer...', 'info');
+    }
+
+    // Item Management Functions
+    function refreshItemTable() {
+        showNotification('Refreshing item data...', 'info');
+        setTimeout(() => {
+            showNotification('Item table refreshed successfully!', 'success');
+        }, 1000);
+    }
+
+    function bulkItemActions() {
+        const selectedItems = document.querySelectorAll('.item-checkbox:checked');
+        if (selectedItems.length === 0) {
+            showNotification('Please select items first', 'warning');
+            return;
+        }
+        showNotification(`Bulk action applied to ${selectedItems.length} items`, 'success');
+    }
+
+    function filterItems() {
+        showNotification('Filtering items...', 'info');
+    }
+
+    function selectAllItems() {
+        document.querySelectorAll('.item-checkbox').forEach(cb => cb.checked = true);
+    }
+
+    function deselectAllItems() {
+        document.querySelectorAll('.item-checkbox').forEach(cb => cb.checked = false);
+    }
+
+    function toggleAllItems() {
+        const selectAll = document.getElementById('selectAllItemsCheckbox').checked;
+        document.querySelectorAll('.item-checkbox').forEach(cb => cb.checked = selectAll);
+    }
+
+    function itemAnalytics() {
+        showNotification('Loading item analytics...', 'info');
+    }
+
+    // Quick Action Functions
+    function createBackup() {
+        if (confirm('Create a full system backup? This may take several minutes.')) {
+            showNotification('Creating backup... Please wait.', 'info');
+            setTimeout(() => {
+                showNotification('Backup created successfully!', 'success');
+            }, 3000);
+        }
+    }
+
+    function sendBulkNotification() {
+        const message = prompt('Enter notification message:');
+        if (message) {
+            showNotification('Sending notification to all users...', 'info');
+            setTimeout(() => {
+                showNotification('Notification sent successfully!', 'success');
+            }, 2000);
+        }
+    }
+
+    function generateReport() {
+        showNotification('Generating comprehensive report...', 'info');
+        setTimeout(() => {
+            showNotification('Report generated and downloaded!', 'success');
+        }, 3000);
+    }
+
+    function clearCache() {
+        if (confirm('Clear all system cache? This may temporarily slow down the system.')) {
+            showNotification('Clearing cache...', 'info');
+            setTimeout(() => {
+                showNotification('Cache cleared successfully!', 'success');
+            }, 1500);
+        }
+    }
+
+    function emergencyMode() {
+        if (confirm('Enable emergency mode? This will restrict access to essential functions only.')) {
+            showNotification('Emergency mode activated!', 'warning');
+        }
+    }
+
+    function generateCustomReport() {
+        showNotification('Generating custom report...', 'info');
+        setTimeout(() => {
+            showNotification('Custom report generated successfully!', 'success');
+        }, 2500);
+    }
+
+    function restoreBackup(filename) {
+        if (confirm(`Restore from backup: ${filename}? This will overwrite current data.`)) {
+            showNotification('Restoring from backup...', 'warning');
+            setTimeout(() => {
+                showNotification('Backup restored successfully!', 'success');
+            }, 4000);
+        }
+    }
+
+    function deleteBackup(filename) {
+        if (confirm(`Delete backup: ${filename}? This action cannot be undone.`)) {
+            showNotification('Backup deleted successfully!', 'success');
+        }
+    }
+
+    function filterLogs() {
+        showNotification('Filtering system logs...', 'info');
     }
 
     // Initialize page

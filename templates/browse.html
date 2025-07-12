@@ -3,204 +3,261 @@
 {% block title %}Browse Items - ReWear{% endblock %}
 
 {% block content %}
-<div class="container mt-5 pt-4">
-    <!-- Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card bg-gradient-primary text-white">
-                <div class="card-body text-center p-4">
-                    <h2 class="fw-bold mb-2">Discover Sustainable Fashion</h2>
-                    <p class="mb-0 opacity-75">Browse through thousands of pre-loved items waiting for a new home</p>
+<!-- Hero Section with Parallax Effect -->
+<div class="browse-hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-50">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="hero-content">
+                    <h1 class="display-3 fw-bold text-white mb-4 animate-fade-up">
+                        Discover Sustainable Fashion
+                    </h1>
+                    <p class="lead text-white-50 mb-5 animate-fade-up" style="animation-delay: 0.2s;">
+                        Browse through thousands of pre-loved items waiting for a new home
+                    </p>
+
+                    <!-- Enhanced Search Bar -->
+                    <div class="search-container animate-fade-up" style="animation-delay: 0.4s;">
+                        <form method="GET" class="search-form">
+                            <div class="search-input-group">
+                                <div class="search-input-wrapper">
+                                    <i class="fas fa-search search-icon"></i>
+                                    <input type="text"
+                                           class="search-input"
+                                           name="search"
+                                           value="{{ search }}"
+                                           placeholder="Search for sustainable fashion...">
+                                </div>
+                                <div class="category-wrapper">
+                                    <select class="category-select" name="category">
+                                        <option value="">All Categories</option>
+                                        <option value="tops" {{ 'selected' if category == 'tops' }}>👕 Tops</option>
+                                        <option value="bottoms" {{ 'selected' if category == 'bottoms' }}>👖 Bottoms</option>
+                                        <option value="dresses" {{ 'selected' if category == 'dresses' }}>👗 Dresses</option>
+                                        <option value="outerwear" {{ 'selected' if category == 'outerwear' }}>🧥 Outerwear</option>
+                                        <option value="shoes" {{ 'selected' if category == 'shoes' }}>👠 Shoes</option>
+                                        <option value="accessories" {{ 'selected' if category == 'accessories' }}>💎 Accessories</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="search-btn">
+                                    <i class="fas fa-search"></i>
+                                    <span>Search</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Search and Filters -->
-    <div class="row mb-4">
+
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-element" style="top: 20%; left: 10%; animation-delay: 0s;">
+            <i class="fas fa-tshirt"></i>
+        </div>
+        <div class="floating-element" style="top: 60%; right: 15%; animation-delay: 2s;">
+            <i class="fas fa-shoe-prints"></i>
+        </div>
+        <div class="floating-element" style="top: 30%; right: 25%; animation-delay: 4s;">
+            <i class="fas fa-gem"></i>
+        </div>
+        <div class="floating-element" style="bottom: 30%; left: 20%; animation-delay: 1s;">
+            <i class="fas fa-female"></i>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid px-4 py-5">
+    <!-- Quick Filter Pills -->
+    <div class="row mb-5">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form method="GET" class="row g-3">
-                        <div class="col-md-6">
-                            <label for="search" class="form-label fw-semibold">
-                                <i class="fas fa-search me-2"></i>Search Items
-                            </label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="search" 
-                                   name="search" 
-                                   value="{{ search }}" 
-                                   placeholder="Search by title or description...">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="category" class="form-label fw-semibold">
-                                <i class="fas fa-filter me-2"></i>Category
-                            </label>
-                            <select class="form-select" id="category" name="category">
-                                <option value="">All Categories</option>
-                                <option value="tops" {{ 'selected' if category == 'tops' }}>Tops</option>
-                                <option value="bottoms" {{ 'selected' if category == 'bottoms' }}>Bottoms</option>
-                                <option value="dresses" {{ 'selected' if category == 'dresses' }}>Dresses</option>
-                                <option value="outerwear" {{ 'selected' if category == 'outerwear' }}>Outerwear</option>
-                                <option value="shoes" {{ 'selected' if category == 'shoes' }}>Shoes</option>
-                                <option value="accessories" {{ 'selected' if category == 'accessories' }}>Accessories</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-search me-1"></i>Search
-                            </button>
-                        </div>
-                    </form>
+            <div class="filter-pills-container">
+                <div class="filter-pills">
+                    <a href="{{ url_for('browse') }}"
+                       class="filter-pill {{ 'active' if not category }}">
+                        <i class="fas fa-th-large"></i>
+                        <span>All Items</span>
+                    </a>
+                    <a href="{{ url_for('browse', category='tops') }}"
+                       class="filter-pill {{ 'active' if category == 'tops' }}">
+                        <i class="fas fa-tshirt"></i>
+                        <span>Tops</span>
+                    </a>
+                    <a href="{{ url_for('browse', category='bottoms') }}"
+                       class="filter-pill {{ 'active' if category == 'bottoms' }}">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Bottoms</span>
+                    </a>
+                    <a href="{{ url_for('browse', category='dresses') }}"
+                       class="filter-pill {{ 'active' if category == 'dresses' }}">
+                        <i class="fas fa-female"></i>
+                        <span>Dresses</span>
+                    </a>
+                    <a href="{{ url_for('browse', category='outerwear') }}"
+                       class="filter-pill {{ 'active' if category == 'outerwear' }}">
+                        <i class="fas fa-coat-arms"></i>
+                        <span>Outerwear</span>
+                    </a>
+                    <a href="{{ url_for('browse', category='shoes') }}"
+                       class="filter-pill {{ 'active' if category == 'shoes' }}">
+                        <i class="fas fa-shoe-prints"></i>
+                        <span>Shoes</span>
+                    </a>
+                    <a href="{{ url_for('browse', category='accessories') }}"
+                       class="filter-pill {{ 'active' if category == 'accessories' }}">
+                        <i class="fas fa-gem"></i>
+                        <span>Accessories</span>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Category Quick Filters -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex flex-wrap gap-2 justify-content-center">
-                <a href="{{ url_for('browse') }}" 
-                   class="btn btn-outline-primary {{ 'active' if not category }}">
-                    <i class="fas fa-th-large me-1"></i>All Items
-                </a>
-                <a href="{{ url_for('browse', category='tops') }}" 
-                   class="btn btn-outline-primary {{ 'active' if category == 'tops' }}">
-                    <i class="fas fa-tshirt me-1"></i>Tops
-                </a>
-                <a href="{{ url_for('browse', category='bottoms') }}" 
-                   class="btn btn-outline-primary {{ 'active' if category == 'bottoms' }}">
-                    <i class="fas fa-user-tie me-1"></i>Bottoms
-                </a>
-                <a href="{{ url_for('browse', category='dresses') }}" 
-                   class="btn btn-outline-primary {{ 'active' if category == 'dresses' }}">
-                    <i class="fas fa-female me-1"></i>Dresses
-                </a>
-                <a href="{{ url_for('browse', category='outerwear') }}" 
-                   class="btn btn-outline-primary {{ 'active' if category == 'outerwear' }}">
-                    <i class="fas fa-coat-arms me-1"></i>Outerwear
-                </a>
-                <a href="{{ url_for('browse', category='shoes') }}" 
-                   class="btn btn-outline-primary {{ 'active' if category == 'shoes' }}">
-                    <i class="fas fa-shoe-prints me-1"></i>Shoes
-                </a>
-                <a href="{{ url_for('browse', category='accessories') }}" 
-                   class="btn btn-outline-primary {{ 'active' if category == 'accessories' }}">
-                    <i class="fas fa-gem me-1"></i>Accessories
-                </a>
-            </div>
-        </div>
-    </div>
-    
+
     <!-- Results Info -->
     {% if search or category %}
-    <div class="row mb-3">
+    <div class="row mb-4">
         <div class="col-12">
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i>
-                Showing {{ items|length }} result(s)
-                {% if search %}for "<strong>{{ search }}</strong>"{% endif %}
-                {% if category %}in category "<strong>{{ category.title() }}</strong>"{% endif %}
-                <a href="{{ url_for('browse') }}" class="btn btn-sm btn-outline-info ms-2">
+            <div class="results-info">
+                <div class="results-text">
+                    <i class="fas fa-search me-2"></i>
+                    <span class="fw-semibold">{{ items|length }} items found</span>
+                    {% if search %}
+                        <span class="text-muted">for "<strong>{{ search }}</strong>"</span>
+                    {% endif %}
+                    {% if category %}
+                        <span class="text-muted">in <strong>{{ category.title() }}</strong></span>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('browse') }}" class="clear-filters-btn">
                     <i class="fas fa-times me-1"></i>Clear Filters
                 </a>
             </div>
         </div>
     </div>
     {% endif %}
-    
-    <!-- Items Grid -->
-    <div class="row">
+
+    <!-- Items Grid with Masonry Layout -->
+    <div class="items-grid">
         {% if items %}
             {% for item in items %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card item-card h-100">
-                    <img src="{{ url_for('static', filename=item.image.replace('static/', '')) }}"
-                         class="item-image"
-                         alt="{{ item.title }}"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="item-image-placeholder" style="display: none; height: 200px; background: #f8f9fa; border: 2px dashed #dee2e6; align-items: center; justify-content: center; flex-direction: column; color: #6c757d;">
-                        <i class="fas fa-image fa-3x mb-2"></i>
-                        <span>No Image</span>
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h6 class="card-title fw-bold">{{ item.title }}</h6>
-                            <span class="badge points-badge">{{ item.points_value }} pts</span>
+            <div class="item-card-wrapper" data-category="{{ item.category }}" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                <div class="modern-item-card">
+                    <div class="item-image-container">
+                        <img src="{{ url_for('static', filename=item.image.replace('static/', '')) }}"
+                             class="item-image"
+                             alt="{{ item.title }}"
+                             loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="item-image-placeholder" style="display: none;">
+                            <i class="fas fa-image"></i>
+                            <span>No Image</span>
                         </div>
-                        <p class="card-text text-muted small flex-grow-1">
-                            {{ item.description[:100] }}{% if item.description|length > 100 %}...{% endif %}
-                        </p>
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <small class="text-muted">
-                                    <i class="fas fa-tag me-1"></i>{{ item.category.title() }}
-                                </small>
-                            </div>
-                            <div class="col-6">
-                                <small class="text-muted">
-                                    <i class="fas fa-ruler me-1"></i>{{ item.size }}
-                                </small>
-                            </div>
-                            <div class="col-6 mt-1">
-                                <small class="text-muted">
-                                    <i class="fas fa-star me-1"></i>{{ item.condition.title() }}
-                                </small>
-                            </div>
-                            <div class="col-6 mt-1">
-                                <small class="text-muted">
-                                    <i class="fas fa-clock me-1"></i>{{ item.created_at[:10] }}
-                                </small>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mt-auto">
-                            <span class="badge status-{{ item.status }}">
-                                <i class="fas fa-{{ 'check' if item.status == 'available' else 'times' }} me-1"></i>
-                                {{ item.status.title() }}
-                            </span>
-                            <div class="btn-group btn-group-sm">
-                                <a href="{{ url_for('item_detail', item_id=item.id) }}" 
-                                   class="btn btn-primary">
-                                    <i class="fas fa-eye me-1"></i>View
+
+                        <!-- Overlay with Quick Actions -->
+                        <div class="item-overlay">
+                            <div class="quick-actions">
+                                <a href="{{ url_for('item_detail', item_id=item.id) }}"
+                                   class="quick-action-btn view-btn"
+                                   data-tooltip="View Details">
+                                    <i class="fas fa-eye"></i>
                                 </a>
                                 {% if item.status == 'available' and session.user_id and item.user_id != session.user_id %}
-                                <a href="{{ url_for('request_exchange', item_id=item.id) }}" 
-                                   class="btn btn-success">
-                                    <i class="fas fa-exchange-alt me-1"></i>Exchange
+                                <a href="{{ url_for('request_exchange', item_id=item.id) }}"
+                                   class="quick-action-btn exchange-btn"
+                                   data-tooltip="Request Exchange">
+                                    <i class="fas fa-exchange-alt"></i>
                                 </a>
                                 {% endif %}
+                                <button class="quick-action-btn favorite-btn"
+                                        data-tooltip="Add to Favorites"
+                                        onclick="toggleFavorite({{ item.id }})">
+                                    <i class="far fa-heart"></i>
+                                </button>
                             </div>
+
+                            <!-- Status Badge -->
+                            <div class="status-badge status-{{ item.status }}">
+                                <i class="fas fa-{{ 'check' if item.status == 'available' else 'times' }}"></i>
+                                {{ item.status.title() }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-title">{{ item.title }}</h3>
+                            <div class="points-badge">
+                                <i class="fas fa-coins"></i>
+                                {{ item.points_value }}
+                            </div>
+                        </div>
+
+                        <p class="item-description">
+                            {{ item.description[:80] }}{% if item.description|length > 80 %}...{% endif %}
+                        </p>
+
+                        <div class="item-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-tag"></i>
+                                <span>{{ item.category.title() }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-ruler"></i>
+                                <span>{{ item.size }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-star"></i>
+                                <span>{{ item.condition.title() }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ item.created_at[:10] }}</span>
+                            </div>
+                        </div>
+
+                        <div class="item-actions">
+                            <a href="{{ url_for('item_detail', item_id=item.id) }}"
+                               class="primary-btn">
+                                <i class="fas fa-eye me-2"></i>View Details
+                            </a>
+                            {% if item.status == 'available' and session.user_id and item.user_id != session.user_id %}
+                            <a href="{{ url_for('request_exchange', item_id=item.id) }}"
+                               class="secondary-btn">
+                                <i class="fas fa-exchange-alt me-2"></i>Exchange
+                            </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         {% else %}
-        <div class="col-12">
-            <div class="text-center py-5">
-                <i class="fas fa-search fa-4x text-muted mb-3"></i>
-                <h4 class="text-muted">No items found</h4>
-                <p class="text-muted">
+        <div class="empty-state">
+            <div class="empty-state-content">
+                <div class="empty-state-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 class="empty-state-title">No items found</h3>
+                <p class="empty-state-description">
                     {% if search or category %}
                         Try adjusting your search criteria or browse all items.
                     {% else %}
                         Be the first to upload an item to our marketplace!
                     {% endif %}
                 </p>
-                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                <div class="empty-state-actions">
                     {% if search or category %}
-                    <a href="{{ url_for('browse') }}" class="btn btn-primary">
+                    <a href="{{ url_for('browse') }}" class="primary-btn">
                         <i class="fas fa-th-large me-2"></i>Browse All Items
                     </a>
                     {% endif %}
                     {% if session.user_id %}
-                    <a href="{{ url_for('upload_item') }}" class="btn btn-success">
+                    <a href="{{ url_for('upload_item') }}" class="secondary-btn">
                         <i class="fas fa-plus me-2"></i>Upload Item
                     </a>
                     {% else %}
-                    <a href="{{ url_for('register') }}" class="btn btn-success">
+                    <a href="{{ url_for('register') }}" class="secondary-btn">
                         <i class="fas fa-user-plus me-2"></i>Join ReWear
                     </a>
                     {% endif %}
@@ -209,144 +266,831 @@
         </div>
         {% endif %}
     </div>
-    
-    <!-- Load More Button (for future pagination) -->
+
+    <!-- Load More Button -->
     {% if items and items|length >= 12 %}
-    <div class="row mt-4">
-        <div class="col-12 text-center">
-            <button class="btn btn-outline-primary btn-lg" onclick="loadMoreItems()">
+    <div class="load-more-section">
+        <button class="load-more-btn" onclick="loadMoreItems()">
+            <span class="load-more-text">
                 <i class="fas fa-plus me-2"></i>Load More Items
-            </button>
-        </div>
+            </span>
+            <div class="load-more-spinner" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+        </button>
     </div>
     {% endif %}
 </div>
 {% endblock %}
 
 {% block extra_js %}
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
 <script>
-    // Add animation to items
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 100
+    });
+
+    // Enhanced search functionality
+    const searchInput = document.querySelector('.search-input');
+    const searchForm = document.querySelector('.search-form');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce(function() {
+            // Add live search suggestions here
+        }, 300));
+
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchForm.submit();
             }
         });
-    }, observerOptions);
-    
-    // Observe all item cards
-    document.querySelectorAll('.item-card').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-        observer.observe(card);
+    }
+
+    // Debounce function
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Filter pill animations
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+        pill.addEventListener('click', function(e) {
+            if (!this.classList.contains('active')) {
+                // Add loading state
+                const originalContent = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Loading...</span>';
+
+                // Restore after navigation
+                setTimeout(() => {
+                    this.innerHTML = originalContent;
+                }, 100);
+            }
+        });
     });
-    
-    // Search functionality
-    document.getElementById('search').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            this.form.submit();
+
+    // Favorite functionality
+    function toggleFavorite(itemId) {
+        const btn = event.target.closest('.favorite-btn');
+        const icon = btn.querySelector('i');
+
+        // Toggle heart icon
+        if (icon.classList.contains('far')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+            btn.classList.add('favorited');
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+            btn.classList.remove('favorited');
+        }
+
+        // Add to favorites (implement backend call here)
+        console.log('Toggle favorite for item:', itemId);
+    }
+
+    // Enhanced load more functionality
+    function loadMoreItems() {
+        const btn = document.querySelector('.load-more-btn');
+        const text = btn.querySelector('.load-more-text');
+        const spinner = btn.querySelector('.load-more-spinner');
+
+        text.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        btn.disabled = true;
+
+        // Simulate loading
+        setTimeout(() => {
+            text.style.display = 'inline-block';
+            spinner.style.display = 'none';
+            btn.disabled = false;
+
+            // Show message
+            alert('Load more functionality will be implemented with pagination in the next version.');
+        }, 2000);
+    }
+
+    // Parallax effect for hero section
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const heroSection = document.querySelector('.browse-hero-section');
+        if (heroSection) {
+            heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
         }
     });
-    
-    // Load more items (placeholder function)
-    function loadMoreItems() {
-        alert('Load more functionality will be implemented with pagination in the next version.');
-    }
-    
-    // Add hover effects
-    document.querySelectorAll('.item-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
+
+    // Floating elements animation
+    document.querySelectorAll('.floating-element').forEach((element, index) => {
+        element.style.animationDelay = `${index * 0.5}s`;
     });
-    
-    // Filter button animations
-    document.querySelectorAll('.btn-outline-primary').forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Add loading animation
-            if (!this.classList.contains('active')) {
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Loading...';
-                
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                }, 1000);
+
+    // Tooltip functionality
+    document.querySelectorAll('[data-tooltip]').forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'custom-tooltip';
+            tooltip.textContent = this.getAttribute('data-tooltip');
+            document.body.appendChild(tooltip);
+
+            const rect = this.getBoundingClientRect();
+            tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
+            tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+
+            setTimeout(() => tooltip.classList.add('show'), 10);
+        });
+
+        element.addEventListener('mouseleave', function() {
+            const tooltip = document.querySelector('.custom-tooltip');
+            if (tooltip) {
+                tooltip.remove();
             }
         });
+    });
+
+    // Smooth scroll for filter pills
+    document.querySelector('.filter-pills-container').addEventListener('wheel', (e) => {
+        e.preventDefault();
+        e.currentTarget.scrollLeft += e.deltaY;
     });
 </script>
 
 <style>
-    .bg-gradient-primary {
+    /* Hero Section Styles */
+    .browse-hero-section {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    
-    .item-card {
-        transition: all 0.3s ease;
-        border-radius: 15px;
+        min-height: 60vh;
+        position: relative;
         overflow: hidden;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
     }
-    
-    .item-card:hover {
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+    .browse-hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.3;
     }
-    
-    .item-image {
-        height: 220px;
-        object-fit: cover;
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .animate-fade-up {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 1s ease-out forwards;
+    }
+
+    @keyframes fadeUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Enhanced Search Bar */
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .search-form {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        padding: 8px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .search-input-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .search-input-wrapper {
+        flex: 1;
+        position: relative;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #667eea;
+        font-size: 18px;
+        z-index: 2;
+    }
+
+    .search-input {
         width: 100%;
-        transition: transform 0.3s ease;
+        border: none;
+        outline: none;
+        padding: 15px 20px 15px 50px;
+        font-size: 16px;
+        background: transparent;
+        border-radius: 20px;
+        color: #333;
     }
-    
-    .item-card:hover .item-image {
-        transform: scale(1.05);
+
+    .search-input::placeholder {
+        color: #999;
     }
-    
-    .btn-outline-primary.active {
+
+    .category-wrapper {
+        min-width: 180px;
+    }
+
+    .category-select {
+        border: none;
+        outline: none;
+        padding: 15px 20px;
+        font-size: 14px;
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 15px;
+        color: #333;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .search-btn {
         background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+        padding: 15px 30px;
+        border-radius: 20px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 120px;
+        justify-content: center;
+    }
+
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Floating Elements */
+    .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .floating-element {
+        position: absolute;
+        color: rgba(255, 255, 255, 0.1);
+        font-size: 3rem;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    /* Filter Pills */
+    .filter-pills-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        padding: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .filter-pills-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-pills {
+        display: flex;
+        gap: 12px;
+        min-width: max-content;
+        padding: 5px;
+    }
+
+    .filter-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        background: rgba(102, 126, 234, 0.1);
+        border: 2px solid transparent;
+        border-radius: 20px;
+        text-decoration: none;
+        color: #667eea;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .filter-pill:hover {
+        background: rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        color: #667eea;
+    }
+
+    .filter-pill.active {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
         border-color: #667eea;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Results Info */
+    .results-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .results-text {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #333;
+    }
+
+    .clear-filters-btn {
+        background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .clear-filters-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
         color: white;
     }
-    
-    .points-badge {
-        background: linear-gradient(45deg, #ff9a9e, #fecfef);
+
+    /* Items Grid */
+    .items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+        padding: 20px 0;
+    }
+
+    .item-card-wrapper {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+
+    .item-card-wrapper[data-aos="fade-up"] {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Modern Item Card */
+    .modern-item-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.4s ease;
+        position: relative;
+    }
+
+    .modern-item-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .item-image-container {
+        position: relative;
+        overflow: hidden;
+        height: 280px;
+    }
+
+    .item-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .modern-item-card:hover .item-image {
+        transform: scale(1.1);
+    }
+
+    .item-image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        color: #6c757d;
+        font-size: 18px;
+    }
+
+    .item-image-placeholder i {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        opacity: 0.5;
+    }
+
+    /* Item Overlay */
+    .item-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+        opacity: 0;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    .modern-item-card:hover .item-overlay {
+        opacity: 1;
+    }
+
+    .quick-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .quick-action-btn {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: #333;
-        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .quick-action-btn:hover {
+        background: white;
+        transform: scale(1.1);
+        color: #667eea;
+    }
+
+    .quick-action-btn.favorited {
+        background: #ff6b6b;
+        color: white;
+    }
+
+    .status-badge {
+        align-self: flex-start;
+        padding: 8px 16px;
         border-radius: 20px;
-        padding: 5px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
-    
-    .status-available {
-        background: linear-gradient(45deg, #a8edea, #fed6e3);
-        color: #333;
+
+    .status-badge.status-available {
+        background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        color: white;
     }
-    
-    .status-exchanged {
+
+    .status-badge.status-exchanged {
         background: linear-gradient(45deg, #ffecd2, #fcb69f);
         color: #333;
     }
-    
+
+    /* Item Content */
+    .item-content {
+        padding: 25px;
+    }
+
+    .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .item-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #333;
+        margin: 0;
+        line-height: 1.3;
+        flex: 1;
+        margin-right: 15px;
+    }
+
+    .points-badge {
+        background: linear-gradient(45deg, #ff9a9e, #fecfef);
+        color: #333;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+    }
+
+    .item-description {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .item-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+    }
+
+    .meta-item i {
+        color: #667eea;
+        width: 16px;
+    }
+
+    .item-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    .primary-btn, .secondary-btn {
+        flex: 1;
+        padding: 12px 20px;
+        border-radius: 15px;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .primary-btn {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+    }
+
+    .primary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+
+    .secondary-btn {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        border: 2px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .secondary-btn:hover {
+        background: rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        color: #667eea;
+    }
+
+    /* Empty State */
+    .empty-state {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        grid-column: 1 / -1;
+    }
+
+    .empty-state-content {
+        text-align: center;
+        max-width: 500px;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        color: #667eea;
+        margin-bottom: 20px;
+        opacity: 0.7;
+    }
+
+    .empty-state-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .empty-state-description {
+        color: #666;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .empty-state-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Load More Section */
+    .load-more-section {
+        text-align: center;
+        margin-top: 50px;
+        padding: 30px;
+    }
+
+    .load-more-btn {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .load-more-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .load-more-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Custom Tooltip */
+    .custom-tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+        white-space: nowrap;
+    }
+
+    .custom-tooltip.show {
+        opacity: 1;
+    }
+
+    .custom-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0, 0, 0, 0.9);
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-        .item-image {
-            height: 180px;
+        .browse-hero-section {
+            min-height: 50vh;
+            padding: 20px 0;
         }
-        
-        .btn-group-sm .btn {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
+
+        .search-input-group {
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-btn {
+            width: 100%;
+        }
+
+        .items-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .filter-pills {
+            justify-content: flex-start;
+        }
+
+        .results-info {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .item-actions {
+            flex-direction: column;
+        }
+
+        .item-meta {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container-fluid {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .modern-item-card {
+            border-radius: 20px;
+        }
+
+        .item-content {
+            padding: 20px;
+        }
+
+        .item-header {
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .points-badge {
+            align-self: flex-start;
         }
     }
 </style>

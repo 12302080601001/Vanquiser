@@ -426,7 +426,7 @@
             <button class="quick-action-btn upload" onclick="window.location.href='{{ url_for('upload_item') }}'">
                 <i class="fas fa-plus me-2"></i>Upload Item
             </button>
-            <button class="quick-action-btn browse" onclick="window.location.href='{{ url_for('browse_items') }}'">
+            <button class="quick-action-btn browse" onclick="window.location.href='{{ url_for('browse') }}'">
                 <i class="fas fa-search me-2"></i>Browse Items
             </button>
             <button class="quick-action-btn profile" onclick="showSection('profile')">
@@ -512,19 +512,19 @@
                             </a>
                         </div>
                         <div class="col-md-3 col-6 mb-3">
-                            <a href="{{ url_for('browse_items') }}" class="btn btn-success w-100 h-100 d-flex flex-column align-items-center justify-content-center p-3">
+                            <a href="{{ url_for('browse') }}" class="btn btn-success w-100 h-100 d-flex flex-column align-items-center justify-content-center p-3">
                                 <i class="fas fa-search fa-2x mb-2"></i>
                                 <span>Browse Items</span>
                             </a>
                         </div>
                         <div class="col-md-3 col-6 mb-3">
-                            <a href="{{ url_for('browse_items', category='tops') }}" class="btn btn-warning w-100 h-100 d-flex flex-column align-items-center justify-content-center p-3">
+                            <a href="{{ url_for('browse', category='tops') }}" class="btn btn-warning w-100 h-100 d-flex flex-column align-items-center justify-content-center p-3">
                                 <i class="fas fa-tshirt fa-2x mb-2"></i>
                                 <span>Find Tops</span>
                             </a>
                         </div>
                         <div class="col-md-3 col-6 mb-3">
-                            <a href="{{ url_for('browse_items', category='bottoms') }}" class="btn btn-info w-100 h-100 d-flex flex-column align-items-center justify-content-center p-3">
+                            <a href="{{ url_for('browse', category='bottoms') }}" class="btn btn-info w-100 h-100 d-flex flex-column align-items-center justify-content-center p-3">
                                 <i class="fas fa-user-tie fa-2x mb-2"></i>
                                 <span>Find Bottoms</span>
                             </a>
@@ -723,7 +723,7 @@
                             <i class="fas fa-heart fa-4x text-muted mb-3"></i>
                             <h5 class="text-muted">Your wishlist is empty</h5>
                             <p class="text-muted">Browse items and add them to your wishlist to keep track of items you're interested in!</p>
-                            <a href="{{ url_for('browse_items') }}" class="btn btn-primary">
+                            <a href="{{ url_for('browse') }}" class="btn btn-primary">
                                 <i class="fas fa-search me-2"></i>Browse Items
                             </a>
                         </div>
@@ -1322,68 +1322,7 @@
             </div>
         </div>
 
-        <!-- Profile Settings Section -->
-        <div id="profile-section" class="content-section" style="display: none;">
-            <h3 class="fw-bold mb-4">
-                <i class="fas fa-user-cog me-2"></i>Profile Settings
-            </h3>
 
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="analytics-card">
-                        <h5 class="fw-bold mb-3">Personal Information</h5>
-                        <form id="profileForm">
-                            <div class="mb-3">
-                                <label for="userName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="userName" value="{{ user.name }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="userEmail" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="userEmail" value="{{ user.email }}" readonly>
-                                <small class="text-muted">Email cannot be changed for security reasons</small>
-                            </div>
-                            <div class="mb-3">
-                                <label for="userPoints" class="form-label">Current Points</label>
-                                <input type="text" class="form-control" value="{{ user.points }} Points" readonly>
-                            </div>
-                            <button type="button" class="quick-action-btn" onclick="updateProfile()">
-                                <i class="fas fa-save me-2"></i>Save Changes
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="analytics-card">
-                        <h5 class="fw-bold mb-3">Account Security</h5>
-                        <form id="passwordForm">
-                            <div class="mb-3">
-                                <label for="currentPassword" class="form-label">Current Password</label>
-                                <input type="password" class="form-control" id="currentPassword">
-                            </div>
-                            <div class="mb-3">
-                                <label for="newPassword" class="form-label">New Password</label>
-                                <input type="password" class="form-control" id="newPassword">
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                <input type="password" class="form-control" id="confirmPassword">
-                            </div>
-                            <button type="button" class="quick-action-btn" onclick="changePassword()">
-                                <i class="fas fa-key me-2"></i>Change Password
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="analytics-card mt-3">
-                        <h6 class="fw-bold mb-3">Account Actions</h6>
-                        <button class="logout-btn" onclick="confirmLogout()">
-                            <i class="fas fa-sign-out-alt me-2"></i>Logout from Account
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -1391,6 +1330,12 @@
 <script>
     // Section Navigation
     function showSection(sectionName) {
+        // Special handling for browse - redirect to browse page
+        if (sectionName === 'browse') {
+            window.location.href = '{{ url_for("browse") }}';
+            return;
+        }
+
         // Hide all sections
         document.querySelectorAll('.content-section').forEach(section => {
             section.style.display = 'none';
@@ -1402,10 +1347,20 @@
         });
 
         // Show selected section
-        document.getElementById(sectionName + '-section').style.display = 'block';
+        const targetSection = document.getElementById(sectionName + '-section');
+        if (targetSection) {
+            targetSection.style.display = 'block';
 
-        // Add active class to clicked menu item
-        document.querySelector(`[href="#${sectionName}"]`).classList.add('active');
+            // Add active class to clicked menu item
+            const menuItem = document.querySelector(`[href="#${sectionName}"]`);
+            if (menuItem) {
+                menuItem.classList.add('active');
+            }
+        } else {
+            console.warn(`Section '${sectionName}-section' not found`);
+            // Fallback to dashboard
+            showSection('dashboard');
+        }
     }
 
     // Flash Message System
@@ -1560,8 +1515,44 @@
         }
     }
 
-    // Profile form submission
+    // Item Management Functions
+    function editItem(itemId) {
+        // Show edit modal
+        const editModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+        editModal.show();
+
+        // Here you would load the item data and populate the form
+        showFlashMessage('Edit functionality will be implemented in the next version.', 'info');
+    }
+
+    function deleteItem(itemId) {
+        // Show delete confirmation modal
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteItemModal'));
+        deleteModal.show();
+
+        // Store the item ID for confirmation
+        window.itemToDelete = itemId;
+    }
+
+    function confirmDelete() {
+        if (window.itemToDelete) {
+            // Here you would make an AJAX call to delete the item
+            showFlashMessage('Delete functionality will be implemented in the next version.', 'info');
+
+            // Close the modal
+            const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteItemModal'));
+            deleteModal.hide();
+
+            // Clear the stored item ID
+            window.itemToDelete = null;
+        }
+    }
+
+    // Profile form submission and initialization
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize dashboard - show dashboard section by default
+        showSection('dashboard');
+
         const profileForm = document.getElementById('profileForm');
         if (profileForm) {
             profileForm.addEventListener('submit', function(e) {
