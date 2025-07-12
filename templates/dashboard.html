@@ -293,14 +293,21 @@
             <li><a href="#my-items" onclick="showSection('my-items')">
                 <i class="fas fa-tshirt"></i>My Items
             </a></li>
-            <li><a href="#browse" onclick="showSection('browse')">
-                <i class="fas fa-search"></i>Browse Items
+            <li><a href="#wishlist" onclick="showSection('wishlist')">
+                <i class="fas fa-heart"></i>Wishlist
             </a></li>
             <li><a href="#exchanges" onclick="showSection('exchanges')">
                 <i class="fas fa-exchange-alt"></i>My Exchanges
             </a></li>
+            <li><a href="#notifications" onclick="showSection('notifications')">
+                <i class="fas fa-bell"></i>Notifications
+                <span class="badge bg-danger ms-2" id="notification-count">3</span>
+            </a></li>
             <li><a href="#analytics" onclick="showSection('analytics')">
                 <i class="fas fa-chart-line"></i>Analytics
+            </a></li>
+            <li><a href="#rewards" onclick="showSection('rewards')">
+                <i class="fas fa-gift"></i>Rewards
             </a></li>
             <li><a href="#activity" onclick="showSection('activity')">
                 <i class="fas fa-history"></i>Activity Logs
@@ -506,6 +513,238 @@
             </div>
         </div>
     </div>
+
+        <!-- My Items Section -->
+        <div id="my-items-section" class="content-section" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold mb-0">
+                    <i class="fas fa-tshirt me-2"></i>My Items
+                </h3>
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary" onclick="filterItems('all')">All</button>
+                    <button class="btn btn-outline-success" onclick="filterItems('available')">Available</button>
+                    <button class="btn btn-outline-warning" onclick="filterItems('exchanged')">Exchanged</button>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Search your items..." id="itemSearch" onkeyup="searchItems()">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="categoryFilter" onchange="filterByCategory()">
+                        <option value="">All Categories</option>
+                        <option value="tops">Tops</option>
+                        <option value="bottoms">Bottoms</option>
+                        <option value="dresses">Dresses</option>
+                        <option value="outerwear">Outerwear</option>
+                        <option value="shoes">Shoes</option>
+                        <option value="accessories">Accessories</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ url_for('upload_item') }}" class="btn btn-primary w-100">
+                        <i class="fas fa-plus me-2"></i>Add New Item
+                    </a>
+                </div>
+            </div>
+
+            <div id="items-grid">
+                {% if items %}
+                <div class="row g-3">
+                    {% for item in items %}
+                    <div class="col-lg-4 col-md-6 item-card-wrapper" data-status="{{ item.status }}" data-category="{{ item.category }}" data-title="{{ item.title.lower() }}">
+                        <div class="card item-card h-100">
+                            <img src="{{ url_for('static', filename=item.image.replace('static/', '')) }}"
+                                 class="item-image"
+                                 alt="{{ item.title }}"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="item-image-placeholder" style="display: none; height: 200px; background: #f8f9fa; border: 2px dashed #dee2e6; align-items: center; justify-content: center; flex-direction: column; color: #6c757d;">
+                                <i class="fas fa-image fa-3x mb-2"></i>
+                                <span>No Image</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="card-title fw-bold">{{ item.title }}</h6>
+                                    <span class="badge points-badge">{{ item.points_value }} pts</span>
+                                </div>
+                                <p class="card-text text-muted small">{{ item.description[:80] }}{% if item.description|length > 80 %}...{% endif %}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-tag me-1"></i>{{ item.category }}
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="fas fa-ruler me-1"></i>{{ item.size }}
+                                    </small>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge status-{{ item.status }}">
+                                        <i class="fas fa-{{ 'check' if item.status == 'available' else 'times' }} me-1"></i>
+                                        {{ item.status.title() }}
+                                    </span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('item_detail', item_id=item.id) }}" class="btn btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <button class="btn btn-outline-secondary" onclick="editItem('{{ item.id }}')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger" onclick="deleteItem('{{ item.id }}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-tshirt fa-4x text-muted mb-3"></i>
+                    <h5 class="text-muted">No items uploaded yet</h5>
+                    <p class="text-muted">Start by uploading your first item to begin exchanging!</p>
+                    <a href="{{ url_for('upload_item') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Upload Your First Item
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Wishlist Section -->
+        <div id="wishlist-section" class="content-section" style="display: none;">
+            <h3 class="fw-bold mb-4">
+                <i class="fas fa-heart me-2"></i>My Wishlist
+            </h3>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <i class="fas fa-heart fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">Your wishlist is empty</h5>
+                            <p class="text-muted">Browse items and add them to your wishlist to keep track of items you're interested in!</p>
+                            <a href="{{ url_for('browse_items') }}" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Browse Items
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exchanges Section -->
+        <div id="exchanges-section" class="content-section" style="display: none;">
+            <h3 class="fw-bold mb-4">
+                <i class="fas fa-exchange-alt me-2"></i>My Exchanges
+            </h3>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-handshake fa-3x text-success mb-3"></i>
+                            <h4 class="fw-bold">{{ items | selectattr('status', 'equalto', 'exchanged') | list | length }}</h4>
+                            <p class="text-muted mb-0">Completed Exchanges</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                            <h4 class="fw-bold">0</h4>
+                            <p class="text-muted mb-0">Pending Exchanges</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-coins fa-3x text-primary mb-3"></i>
+                            <h4 class="fw-bold">{{ user.points }}</h4>
+                            <p class="text-muted mb-0">Points Earned</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="fw-bold mb-0">Exchange History</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center py-4">
+                        <i class="fas fa-exchange-alt fa-4x text-muted mb-3"></i>
+                        <h5 class="text-muted">No exchanges yet</h5>
+                        <p class="text-muted">Start exchanging items to see your exchange history here!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div id="notifications-section" class="content-section" style="display: none;">
+            <h3 class="fw-bold mb-4">
+                <i class="fas fa-bell me-2"></i>Notifications
+            </h3>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold mb-0">Recent Notifications</h6>
+                                <button class="btn btn-sm btn-outline-primary" onclick="markAllRead()">Mark All Read</button>
+                            </div>
+
+                            <!-- Sample Notifications -->
+                            <div class="notification-item p-3 border-bottom">
+                                <div class="d-flex align-items-start">
+                                    <div class="notification-icon me-3">
+                                        <i class="fas fa-heart text-danger"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="fw-bold mb-1">Someone liked your item!</h6>
+                                        <p class="text-muted mb-1">Your "Vintage Denim Jacket" received a new like.</p>
+                                        <small class="text-muted">2 hours ago</small>
+                                    </div>
+                                    <span class="badge bg-primary">New</span>
+                                </div>
+                            </div>
+
+                            <div class="notification-item p-3 border-bottom">
+                                <div class="d-flex align-items-start">
+                                    <div class="notification-icon me-3">
+                                        <i class="fas fa-exchange-alt text-success"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="fw-bold mb-1">Exchange request received!</h6>
+                                        <p class="text-muted mb-1">Someone wants to exchange with your "Black Leather Boots".</p>
+                                        <small class="text-muted">1 day ago</small>
+                                    </div>
+                                    <span class="badge bg-primary">New</span>
+                                </div>
+                            </div>
+
+                            <div class="notification-item p-3">
+                                <div class="d-flex align-items-start">
+                                    <div class="notification-icon me-3">
+                                        <i class="fas fa-coins text-warning"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="fw-bold mb-1">Points earned!</h6>
+                                        <p class="text-muted mb-1">You earned 50 points for uploading a new item.</p>
+                                        <small class="text-muted">3 days ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 
 <!-- Edit Item Modal -->
@@ -547,6 +786,133 @@
 {% endblock %}
 
 
+
+        <!-- Rewards Section -->
+        <div id="rewards-section" class="content-section" style="display: none;">
+            <h3 class="fw-bold mb-4">
+                <i class="fas fa-gift me-2"></i>Rewards & Achievements
+            </h3>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="fw-bold mb-0">
+                                <i class="fas fa-coins me-2"></i>Your Points
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h2 class="fw-bold text-primary mb-3">{{ user.points }}</h2>
+                            <p class="text-muted">Available Points</p>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: {{ (user.points % 100) }}%"></div>
+                            </div>
+                            <small class="text-muted">{{ 100 - (user.points % 100) }} points to next reward level</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="fw-bold mb-0">
+                                <i class="fas fa-trophy me-2"></i>Achievements
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="achievement-item d-flex align-items-center mb-3">
+                                <div class="achievement-icon me-3">
+                                    <i class="fas fa-upload text-success fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">First Upload</h6>
+                                    <small class="text-muted">Upload your first item</small>
+                                </div>
+                                {% if items|length > 0 %}
+                                <i class="fas fa-check-circle text-success ms-auto"></i>
+                                {% endif %}
+                            </div>
+
+                            <div class="achievement-item d-flex align-items-center mb-3">
+                                <div class="achievement-icon me-3">
+                                    <i class="fas fa-exchange-alt text-warning fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">First Exchange</h6>
+                                    <small class="text-muted">Complete your first exchange</small>
+                                </div>
+                                {% if items | selectattr('status', 'equalto', 'exchanged') | list | length > 0 %}
+                                <i class="fas fa-check-circle text-success ms-auto"></i>
+                                {% endif %}
+                            </div>
+
+                            <div class="achievement-item d-flex align-items-center">
+                                <div class="achievement-icon me-3">
+                                    <i class="fas fa-star text-primary fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">5 Items Uploaded</h6>
+                                    <small class="text-muted">Upload 5 items to your closet</small>
+                                </div>
+                                {% if items|length >= 5 %}
+                                <i class="fas fa-check-circle text-success ms-auto"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-gift me-2"></i>Available Rewards
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-primary">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-percentage fa-3x text-primary mb-3"></i>
+                                    <h6 class="fw-bold">10% Discount</h6>
+                                    <p class="text-muted small">Get 10% off your next purchase</p>
+                                    <button class="btn btn-primary btn-sm" {% if user.points < 100 %}disabled{% endif %}>
+                                        Redeem (100 pts)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-success">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-shipping-fast fa-3x text-success mb-3"></i>
+                                    <h6 class="fw-bold">Free Shipping</h6>
+                                    <p class="text-muted small">Free shipping on your next order</p>
+                                    <button class="btn btn-success btn-sm" {% if user.points < 150 %}disabled{% endif %}>
+                                        Redeem (150 pts)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-warning">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-crown fa-3x text-warning mb-3"></i>
+                                    <h6 class="fw-bold">Premium Badge</h6>
+                                    <p class="text-muted small">Get a premium badge for 30 days</p>
+                                    <button class="btn btn-warning btn-sm" {% if user.points < 200 %}disabled{% endif %}>
+                                        Redeem (200 pts)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Analytics Section -->
         <div id="analytics-section" class="content-section" style="display: none;">
