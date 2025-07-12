@@ -43,6 +43,24 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 # Create data directory for backward compatibility (file uploads, etc.)
 os.makedirs('data', exist_ok=True)
 
+# Initialize application
+def initialize_app():
+    """Initialize the application"""
+    try:
+        from startup import ensure_directories, create_admin_user
+        print("🚀 Initializing ReWear application...")
+        ensure_directories()
+        create_admin_user()
+        print("✅ Application initialized successfully!")
+        return True
+    except Exception as e:
+        print(f"⚠️  Application initialization warning: {e}")
+        # Continue anyway - the app can still function
+        return False
+
+# Global flag to track initialization
+_app_initialized = False
+
 # Legacy functions - now using MongoDB
 def load_data(collection_name):
     """Load data from MongoDB collection (replaces JSON file loading)"""
@@ -567,6 +585,12 @@ def send_points_update_email(user, points_change, reason):
 
 @app.route('/')
 def home():
+    # Initialize app on first access
+    global _app_initialized
+    if not _app_initialized:
+        initialize_app()
+        _app_initialized = True
+
     # Get latest 6 available items for homepage
     items = find_documents('items', {'status': 'available'})
     latest_items = sorted(items, key=lambda x: x['created_at'], reverse=True)[:6]

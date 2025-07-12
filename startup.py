@@ -4,7 +4,16 @@ Startup script to ensure all necessary directories and MongoDB connection exist
 """
 import os
 import json
-from database import mongo_db, insert_document, find_one_document
+import sys
+
+# Try to import database functions, handle gracefully if not available
+try:
+    from database import mongo_db, insert_document, find_one_document
+    DATABASE_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️  Database import failed: {e}")
+    print("   This is normal during build phase - continuing with directory setup only")
+    DATABASE_AVAILABLE = False
 
 def ensure_directories():
     """Create necessary directories if they don't exist"""
@@ -40,6 +49,10 @@ def ensure_data_files():
 
 def create_admin_user():
     """Create default admin user if no users exist in MongoDB"""
+    if not DATABASE_AVAILABLE:
+        print("⚠️  Skipping admin user creation - database not available")
+        return
+
     try:
         # Check if admin user exists in MongoDB
         admin_user = find_one_document('users', {'email': 'admin@rewear.com'})
@@ -73,10 +86,15 @@ def create_admin_user():
 if __name__ == "__main__":
     print("Running startup script...")
 
-    # Test MongoDB connection
-    if not mongo_db.client:
-        print("❌ Failed to connect to MongoDB. Please check your connection.")
-        exit(1)
+    # Test MongoDB connection only if database is available
+    if DATABASE_AVAILABLE:
+        if not mongo_db.client:
+            print("❌ Failed to connect to MongoDB. Please check your connection.")
+            exit(1)
+        else:
+            print("✅ MongoDB connection verified")
+    else:
+        print("⚠️  Skipping MongoDB connection test - database not available during build")
 
     ensure_directories()
     ensure_data_files()
