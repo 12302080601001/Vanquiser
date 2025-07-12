@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ReWear - Sustainable Fashion Exchange Platform
 
 ReWear is a community-driven web platform designed to promote sustainable fashion by enabling users to exchange unused clothing. Instead of discarding wearable garments, users can upload their items, browse others' listings, and either request a direct swap or redeem clothes using a points-based system.
@@ -207,3 +208,40 @@ For questions, suggestions, or issues:
 ---
 
 **ReWear** - Making sustainable fashion accessible to everyone! 🌍♻️👕
+=======
+# Vanquiser
+
+Team Name: Vanquiser
+Problem Statement:
+
+ReWear – Community Clothing Exchange
+Overview:
+Develop ReWear, a web-based platform that enables users to exchange unused clothing
+through direct swaps or a point-based redemption system. The goal is to promote sustainable
+fashion and reduce textile waste by encouraging users to reuse wearable garments instead of
+discarding them.
+Features:
+User Authentication
+Email/password signup and login
+Landing Page
+Platform introduction
+Calls-to-action: “Start Swapping”, “Browse Items”, “List an Item”
+Featured items carousel
+User Dashboard
+Profile details and points balance
+Uploaded items overview
+Ongoing and completed swaps list
+Item Detail Page
+Image gallery and full item description
+Uploader info
+Options: “Swap Request” or “Redeem via Points”
+Item availability status
+Add New Item Page
+Upload images
+Enter title, description, category, type, size, condition, and tags
+Submit to list item
+Admin Role
+Moderate and approve/reject item listings
+Remove inappropriate or spam items
+Lightweight admin panel for oversight
+>>>>>>> 69bc942dc2430fa95f3e838c42f9f4583d3d37fb
