@@ -1,0 +1,296 @@
+/* ReWear Custom Styles */
+
+/* Image Fallback Handling */
+.item-image, .item-detail-image, .thumbnail-image, .admin-item-thumb, .item-thumb {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+}
+
+.item-image::before, 
+.item-detail-image::before, 
+.thumbnail-image::before, 
+.admin-item-thumb::before, 
+.item-thumb::before {
+    content: '\f1c5'; /* Font Awesome t-shirt icon */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #6c757d;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.item-image img, 
+.item-detail-image img, 
+.thumbnail-image img, 
+.admin-item-thumb img, 
+.item-thumb img {
+    position: relative;
+    z-index: 2;
+}
+
+/* Remove duplicate image containers */
+.image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-container:hover img {
+    transform: scale(1.05);
+}
+
+/* Improved Card Styling */
+.card {
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Stat Cards Animation */
+.stat-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradient Backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+}
+
+.bg-gradient-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #54a0ff 0%, #5f27cd 100%);
+}
+
+/* Button Improvements */
+.btn {
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Improvements */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    transform: scale(1.02);
+}
+
+/* Badge Improvements */
+.points-badge {
+    background: linear-gradient(45deg, #ff9a9e, #fecfef);
+    color: #333;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 5px 15px;
+}
+
+.status-available {
+    background: linear-gradient(45deg, #a8edea, #fed6e3);
+    color: #333;
+}
+
+.status-exchanged {
+    background: linear-gradient(45deg, #ffecd2, #fcb69f);
+    color: #333;
+}
+
+/* Navigation Improvements */
+.navbar {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Improvements */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn {
+        font-size: 0.875rem;
+        padding: 8px 16px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    
+    .item-image::before, 
+    .item-detail-image::before, 
+    .thumbnail-image::before, 
+    .admin-item-thumb::before, 
+    .item-thumb::before {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hover Effects */
+.hover-lift {
+    transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+/* Text Gradients */
+.text-gradient {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #5a6fd8, #6a4c93);
+}
+
+/* Alert Improvements */
+.alert {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.alert-info {
+    background: linear-gradient(45deg, #e3f2fd, #f0f8ff);
+    border-left: 4px solid #2196f3;
+}
+
+.alert-success {
+    background: linear-gradient(45deg, #e8f5e8, #f0fff0);
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background: linear-gradient(45deg, #ffeaea, #fff0f0);
+    border-left: 4px solid #dc3545;
+}
+
+.alert-warning {
+    background: linear-gradient(45deg, #fff8e1, #fffbf0);
+    border-left: 4px solid #ffc107;
+}

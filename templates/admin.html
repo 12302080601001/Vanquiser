@@ -1,0 +1,1335 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Control Center - ReWear{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+        min-height: 100vh;
+    }
+
+    .admin-header {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #ff4757 100%);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);
+    }
+
+    .admin-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .admin-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    }
+
+    .stat-card.users { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .stat-card.items { background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); }
+    .stat-card.exchanges { background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%); }
+    .stat-card.activities { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); }
+    .stat-card.points { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; }
+    .stat-card.active { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #333; }
+
+    .admin-nav {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .admin-nav .nav-link {
+        color: white;
+        font-weight: 600;
+        border-radius: 10px;
+        margin: 0 5px;
+        transition: all 0.3s ease;
+    }
+
+    .admin-nav .nav-link.active {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        color: white;
+    }
+
+    .admin-nav .nav-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .admin-profile {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .admin-profile::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transform: translate(30px, -30px);
+    }
+
+    .activity-log {
+        max-height: 400px;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 15px;
+    }
+
+    .activity-item {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 10px;
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+
+    .activity-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-admin {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        border: none;
+        border-radius: 25px;
+        color: white;
+        font-weight: 600;
+        padding: 10px 25px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-admin:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        color: white;
+    }
+
+    .btn-danger-admin {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    }
+
+    .btn-success-admin {
+        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    }
+
+    .btn-warning-admin {
+        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    }
+
+    .table-admin {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-admin thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .table-admin tbody tr:hover {
+        background: rgba(102, 126, 234, 0.1);
+        transform: scale(1.01);
+    }
+
+    .admin-logout {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .pulse {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .glow {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .admin-welcome {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        color: white;
+        backdrop-filter: blur(20px);
+    }
+
+    .admin-avatar-sm {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    .privilege-card {
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+        color: white;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .privilege-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+    }
+
+    .notification {
+        animation: slideInRight 0.5s ease-out;
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .admin-avatar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Admin Logout Button -->
+<div class="admin-logout">
+    <button class="btn btn-admin" onclick="confirmAdminLogout()">
+        <i class="fas fa-sign-out-alt me-2"></i>Admin Logout
+    </button>
+</div>
+
+<div class="container-fluid mt-5 pt-4">
+    <!-- Admin Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="admin-header p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="fw-bold mb-2">
+                            <i class="fas fa-crown me-3"></i>Admin Control Center
+                        </h1>
+                        <p class="mb-0 opacity-90">Complete platform management and monitoring system</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="admin-profile p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="admin-avatar">
+                                        <i class="fas fa-user-shield fa-2x"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">{{ current_user.name }}</h5>
+                                    <small class="opacity-75">Super Administrator</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Welcome & Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="admin-welcome p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="mb-2">
+                            <i class="fas fa-rocket me-2"></i>Welcome back, {{ current_user.name }}!
+                        </h4>
+                        <p class="mb-0 opacity-90">You have complete control over the ReWear platform. Monitor activities, manage users, and ensure smooth operations.</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="d-flex justify-content-end gap-3">
+                            <div class="text-center">
+                                <h3 class="mb-0 pulse">{{ activity_stats.today_activities }}</h3>
+                                <small class="opacity-75">Today's Activities</small>
+                            </div>
+                            <div class="text-center">
+                                <h3 class="mb-0 pulse">{{ activity_stats.unique_users_today }}</h3>
+                                <small class="opacity-75">Active Users</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-time Statistics Cards -->
+    <div class="row mb-4" id="statsContainer">
+        <div class="col-lg-2 col-md-4 col-6 mb-3">
+            <div class="stat-card users text-center p-4 h-100" onclick="refreshStats()">
+                <i class="fas fa-users fa-3x mb-3"></i>
+                <h3 class="fw-bold mb-1" id="totalUsers">{{ stats.total_users }}</h3>
+                <small class="opacity-75">Total Users</small>
+                <div class="mt-2">
+                    <i class="fas fa-sync-alt fa-sm opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6 mb-3">
+            <div class="stat-card items text-center p-4 h-100" onclick="refreshStats()">
+                <i class="fas fa-tshirt fa-3x mb-3"></i>
+                <h3 class="fw-bold mb-1" id="totalItems">{{ stats.total_items }}</h3>
+                <small class="opacity-75">Total Items</small>
+                <div class="mt-2">
+                    <i class="fas fa-sync-alt fa-sm opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6 mb-3">
+            <div class="stat-card active text-center p-4 h-100" onclick="refreshStats()">
+                <i class="fas fa-check-circle fa-3x mb-3"></i>
+                <h3 class="fw-bold mb-1" id="activeItems">{{ stats.active_items }}</h3>
+                <small class="opacity-75">Available Items</small>
+                <div class="mt-2">
+                    <i class="fas fa-sync-alt fa-sm opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6 mb-3">
+            <div class="stat-card exchanges text-center p-4 h-100" onclick="refreshStats()">
+                <i class="fas fa-exchange-alt fa-3x mb-3"></i>
+                <h3 class="fw-bold mb-1" id="totalExchanges">{{ stats.total_exchanges }}</h3>
+                <small class="opacity-75">Total Exchanges</small>
+                <div class="mt-2">
+                    <i class="fas fa-sync-alt fa-sm opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6 mb-3">
+            <div class="stat-card activities text-center p-4 h-100" onclick="refreshStats()">
+                <i class="fas fa-chart-line fa-3x mb-3"></i>
+                <h3 class="fw-bold mb-1" id="todayActivities">{{ activity_stats.today_activities }}</h3>
+                <small class="opacity-75">Today's Activities</small>
+                <div class="mt-2">
+                    <i class="fas fa-sync-alt fa-sm opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6 mb-3">
+            <div class="stat-card points text-center p-4 h-100" onclick="refreshStats()">
+                <i class="fas fa-coins fa-3x mb-3"></i>
+                <h3 class="fw-bold mb-1" id="totalPoints">{{ stats.total_points }}</h3>
+                <small class="opacity-75">Total Points</small>
+                <div class="mt-2">
+                    <i class="fas fa-sync-alt fa-sm opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Activity Logs Section -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="admin-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-history me-2"></i>Recent Activity Logs
+                    </h5>
+                    <button class="btn btn-admin btn-sm" onclick="refreshActivityLogs()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                    </button>
+                </div>
+                <div class="activity-log" id="activityLogs">
+                    {% for log in activity_logs %}
+                    <div class="activity-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">
+                                    <i class="fas fa-{{ 'user-plus' if log.action == 'REGISTER' else 'sign-in-alt' if log.action == 'LOGIN' else 'upload' if 'UPLOAD' in log.action else 'exchange-alt' if 'EXCHANGE' in log.action else 'cog' }} me-2"></i>
+                                    {{ log.action.replace('_', ' ').title() }}
+                                </h6>
+                                <p class="mb-1 text-muted small">{{ log.details }}</p>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i>{{ log.timestamp[:19].replace('T', ' ') }}
+                                    <i class="fas fa-globe ms-3 me-1"></i>{{ log.ip_address }}
+                                </small>
+                            </div>
+                            <span class="badge bg-primary">{{ log.user_id[:8] }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="admin-card p-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-chart-pie me-2"></i>Activity Statistics
+                </h5>
+                <div class="mb-3">
+                    <h6>Most Active Users</h6>
+                    {% for user_name, count in activity_stats.most_active_users.items() %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>{{ user_name }}</span>
+                        <span class="badge bg-primary">{{ count }} activities</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <h6>Popular Actions</h6>
+                    {% for action, count in activity_stats.popular_actions.items() %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>{{ action.replace('_', ' ').title() }}</span>
+                        <span class="badge bg-success">{{ count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <h6>Upload Analytics</h6>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Total Items Uploaded</span>
+                        <span class="badge bg-info">{{ stats.total_items }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Available Items</span>
+                        <span class="badge bg-success">{{ stats.active_items }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Exchanged Items</span>
+                        <span class="badge bg-warning">{{ stats.total_items - stats.active_items }}</span>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-admin" onclick="exportActivityLogs()">
+                            <i class="fas fa-download me-2"></i>Export Logs
+                        </button>
+                        <button class="btn btn-success-admin" onclick="viewDetailedAnalytics()">
+                            <i class="fas fa-chart-pie me-2"></i>Detailed Analytics
+                        </button>
+                        <a href="{{ url_for('admin_profile') }}" class="btn btn-warning-admin">
+                            <i class="fas fa-user-shield me-2"></i>Admin Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Control Tabs -->
+    <div class="row">
+        <div class="col-12">
+            <div class="admin-card">
+                <div class="admin-nav p-3">
+                    <ul class="nav nav-pills justify-content-center" id="adminTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">
+                                <i class="fas fa-users me-2"></i>User Management
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="items-tab" data-bs-toggle="tab" data-bs-target="#items" type="button" role="tab">
+                                <i class="fas fa-tshirt me-2"></i>Item Control
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="exchanges-tab" data-bs-toggle="tab" data-bs-target="#exchanges" type="button" role="tab">
+                                <i class="fas fa-exchange-alt me-2"></i>Exchange Monitor
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
+                                <i class="fas fa-cog me-2"></i>Platform Settings
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab">
+                                <i class="fas fa-user-shield me-2"></i>Admin Profile
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="adminTabsContent">
+                        <!-- Users Tab -->
+                        <div class="tab-pane fade show active" id="users" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold mb-0">
+                                    <i class="fas fa-users me-2"></i>User Management Center
+                                </h5>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-success-admin btn-sm" onclick="refreshUserTable()">
+                                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                                    </button>
+                                    <button class="btn btn-warning-admin btn-sm" onclick="exportUsers()">
+                                        <i class="fas fa-download me-1"></i>Export
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-admin" id="usersTable">
+                                    <thead>
+                                        <tr>
+                                            <th>User Details</th>
+                                            <th>Contact</th>
+                                            <th>Points</th>
+                                            <th>Status</th>
+                                            <th>Joined</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTableBody">
+                                        {% for user in users %}
+                                        <tr id="user-{{ user.id }}">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="admin-avatar-sm me-3">
+                                                        <i class="fas fa-{{ 'user-shield' if user.is_admin else 'user' }}"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">{{ user.name }}</h6>
+                                                        {% if user.is_admin %}
+                                                        <span class="badge bg-danger">Administrator</span>
+                                                        {% else %}
+                                                        <span class="badge bg-primary">Regular User</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>{{ user.email }}</strong><br>
+                                                    <small class="text-muted">ID: {{ user.id[:8] }}...</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-center">
+                                                    <h5 class="mb-0 text-warning">{{ user.points }}</h5>
+                                                    <small class="text-muted">points</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success pulse">
+                                                    <i class="fas fa-circle me-1"></i>Active
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>{{ user.created_at[:10] }}</strong><br>
+                                                    <small class="text-muted">{{ user.created_at[11:16] }}</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <button class="btn btn-admin btn-sm" onclick="toggleAdminStatus('{{ user.id }}', {{ 'true' if user.is_admin else 'false' }})"
+                                                            title="{{ 'Revoke Admin' if user.is_admin else 'Make Admin' }}">
+                                                        <i class="fas fa-{{ 'user-minus' if user.is_admin else 'user-plus' }}"></i>
+                                                    </button>
+                                                    <button class="btn btn-warning-admin btn-sm" onclick="viewUserDetails('{{ user.id }}')" title="View Details">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    {% if not user.is_admin %}
+                                                    <button class="btn btn-danger-admin btn-sm" onclick="deleteUser('{{ user.id }}', '{{ user.name }}')" title="Delete User">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Items Tab -->
+                        <div class="tab-pane fade" id="items" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0">Item Management</h5>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-secondary">
+                                        <i class="fas fa-filter me-1"></i>Filter
+                                    </button>
+                                    <button class="btn btn-outline-secondary">
+                                        <i class="fas fa-download me-1"></i>Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Title</th>
+                                            <th>Category</th>
+                                            <th>Points</th>
+                                            <th>Status</th>
+                                            <th>Owner</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>
+                                                <img src="{{ url_for('static', filename=item.image.replace('static/', '')) }}"
+                                                     class="admin-item-thumb"
+                                                     alt="{{ item.title }}"
+                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                <div class="admin-thumb-placeholder" style="display: none; width: 60px; height: 60px; background: #f8f9fa; border: 1px dashed #dee2e6; align-items: center; justify-content: center; color: #6c757d;">
+                                                    <i class="fas fa-image"></i>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>{{ item.title }}</strong>
+                                                    <br><small class="text-muted">{{ item.size }} • {{ item.condition.title() }}</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">{{ item.category.title() }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-warning">{{ item.points_value }} pts</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-{{ 'success' if item.status == 'available' else 'secondary' }}">
+                                                    {{ item.status.title() }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% set owner = users | selectattr('id', 'equalto', item.user_id) | first %}
+                                                {{ owner.name if owner else 'Unknown' }}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="{{ url_for('item_detail', item_id=item.id) }}" class="btn btn-outline-primary">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-outline-warning" onclick="moderateItem('{{ item.id }}')">
+                                                        <i class="fas fa-flag"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" onclick="deleteItem('{{ item.id }}')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Exchanges Tab -->
+                        <div class="tab-pane fade" id="exchanges" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0">Exchange History</h5>
+                                <button class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-download me-1"></i>Export Data
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Exchange ID</th>
+                                            <th>Item</th>
+                                            <th>Requester</th>
+                                            <th>Owner</th>
+                                            <th>Points</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for exchange in exchanges %}
+                                        <tr>
+                                            <td><code>{{ exchange.id[:8] }}...</code></td>
+                                            <td>
+                                                {% set item = items | selectattr('id', 'equalto', exchange.item_id) | first %}
+                                                {{ item.title if item else 'Deleted Item' }}
+                                            </td>
+                                            <td>
+                                                {% set requester = users | selectattr('id', 'equalto', exchange.requester_id) | first %}
+                                                {{ requester.name if requester else 'Unknown' }}
+                                            </td>
+                                            <td>
+                                                {% set owner = users | selectattr('id', 'equalto', exchange.owner_id) | first %}
+                                                {{ owner.name if owner else 'Unknown' }}
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-warning">{{ exchange.points }} pts</span>
+                                            </td>
+                                            <td>{{ exchange.created_at[:10] }}</td>
+                                            <td>
+                                                <span class="badge bg-success">{{ exchange.status.title() }}</span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Settings Tab -->
+                        <div class="tab-pane fade" id="settings" role="tabpanel">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fas fa-cog me-2"></i>Platform Settings
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="admin-card p-4">
+                                        <h6 class="fw-bold mb-3">General Settings</h6>
+                                        <div class="mb-3">
+                                            <label class="form-label">Platform Name</label>
+                                            <input type="text" class="form-control" value="ReWear" id="platformName">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Default Starting Points</label>
+                                            <input type="number" class="form-control" value="100" id="defaultPoints">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Max File Size (MB)</label>
+                                            <input type="number" class="form-control" value="16" id="maxFileSize">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="admin-card p-4">
+                                        <h6 class="fw-bold mb-3">Moderation Settings</h6>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="autoApprove" checked>
+                                            <label class="form-check-label" for="autoApprove">
+                                                Auto-approve new items
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                            <label class="form-check-label" for="emailNotifications">
+                                                Email notifications enabled
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="maintenanceMode">
+                                            <label class="form-check-label" for="maintenanceMode">
+                                                Maintenance mode
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button class="btn btn-admin btn-lg" onclick="saveSettings()">
+                                    <i class="fas fa-save me-2"></i>Save All Settings
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Admin Profile Tab -->
+                        <div class="tab-pane fade" id="profile" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="admin-card p-4 text-center">
+                                        <div class="admin-avatar mx-auto mb-3" style="width: 100px; height: 100px;">
+                                            <i class="fas fa-user-shield fa-3x"></i>
+                                        </div>
+                                        <h4 class="fw-bold">{{ current_user.name }}</h4>
+                                        <div class="admin-badge mb-3">
+                                            <i class="fas fa-crown me-2"></i>Super Administrator
+                                        </div>
+                                        <p class="text-muted">{{ current_user.email }}</p>
+                                        <div class="d-grid gap-2">
+                                            <a href="{{ url_for('admin_profile') }}" class="btn btn-admin">
+                                                <i class="fas fa-user-edit me-2"></i>View Full Profile
+                                            </a>
+                                            <button class="btn btn-warning-admin" onclick="changeAdminPassword()">
+                                                <i class="fas fa-key me-2"></i>Change Password
+                                            </button>
+                                            <button class="btn btn-danger-admin" onclick="confirmAdminLogout()">
+                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="admin-card p-4">
+                                        <h5 class="fw-bold mb-3">
+                                            <i class="fas fa-shield-alt me-2"></i>Administrator Privileges
+                                        </h5>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="privilege-card p-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-users fa-2x me-3"></i>
+                                                        <div>
+                                                            <h6 class="mb-1">User Management</h6>
+                                                            <small>Full control over user accounts</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <div class="privilege-card p-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-tshirt fa-2x me-3"></i>
+                                                        <div>
+                                                            <h6 class="mb-1">Content Moderation</h6>
+                                                            <small>Review and manage all items</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <div class="privilege-card p-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-chart-line fa-2x me-3"></i>
+                                                        <div>
+                                                            <h6 class="mb-1">Analytics Access</h6>
+                                                            <small>View detailed platform statistics</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <div class="privilege-card p-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-cog fa-2x me-3"></i>
+                                                        <div>
+                                                            <h6 class="mb-1">System Configuration</h6>
+                                                            <small>Modify platform settings</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <h6 class="fw-bold mb-3">Recent Admin Activities</h6>
+                                            <div class="activity-log" style="max-height: 200px; overflow-y: auto;">
+                                                {% for log in activity_logs[:5] %}
+                                                {% if 'ADMIN' in log.action or log.user_id == current_user.id %}
+                                                <div class="activity-item mb-2 p-2">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>
+                                                            <strong>{{ log.action.replace('_', ' ').title() }}</strong><br>
+                                                            <small class="text-muted">{{ log.details }}</small>
+                                                        </div>
+                                                        <small class="text-muted">{{ log.timestamp[:16].replace('T', ' ') }}</small>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Global variables
+    let isLoading = false;
+
+    // Admin Logout Function
+    function confirmAdminLogout() {
+        if (confirm('Are you sure you want to logout from the admin panel?')) {
+            window.location.href = '{{ url_for("logout") }}';
+        }
+    }
+
+    // Real-time Statistics Refresh
+    function refreshStats() {
+        if (isLoading) return;
+        isLoading = true;
+
+        // Show loading animation
+        document.querySelectorAll('.stat-card .fa-sync-alt').forEach(icon => {
+            icon.classList.add('fa-spin');
+        });
+
+        fetch('/admin/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // Update statistics
+                document.getElementById('totalUsers').textContent = data.total_users;
+                document.getElementById('totalItems').textContent = data.total_items;
+                document.getElementById('activeItems').textContent = data.active_items;
+                document.getElementById('totalExchanges').textContent = data.total_exchanges;
+                document.getElementById('todayActivities').textContent = data.activity_stats.today_activities;
+                document.getElementById('totalPoints').textContent = data.total_points;
+
+                showNotification('Statistics updated successfully!', 'success');
+            })
+            .catch(error => {
+                console.error('Error refreshing stats:', error);
+                showNotification('Failed to refresh statistics', 'error');
+            })
+            .finally(() => {
+                isLoading = false;
+                document.querySelectorAll('.stat-card .fa-sync-alt').forEach(icon => {
+                    icon.classList.remove('fa-spin');
+                });
+            });
+    }
+
+    // User Management Functions
+    function toggleAdminStatus(userId, isCurrentlyAdmin) {
+        if (isLoading) return;
+
+        const action = isCurrentlyAdmin ? 'revoke admin privileges from' : 'grant admin privileges to';
+        if (!confirm(`Are you sure you want to ${action} this user?`)) {
+            return;
+        }
+
+        isLoading = true;
+        showNotification('Updating user status...', 'info');
+
+        fetch(`/admin/api/user/${userId}/toggle-admin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            // Update the UI
+            const userRow = document.getElementById(`user-${userId}`);
+            const badge = userRow.querySelector('.badge');
+            const button = userRow.querySelector('button[onclick*="toggleAdminStatus"]');
+            const icon = userRow.querySelector('.admin-avatar-sm i');
+
+            if (data.is_admin) {
+                badge.className = 'badge bg-danger';
+                badge.textContent = 'Administrator';
+                button.innerHTML = '<i class="fas fa-user-minus"></i>';
+                button.title = 'Revoke Admin';
+                button.setAttribute('onclick', `toggleAdminStatus('${userId}', true)`);
+                icon.className = 'fas fa-user-shield';
+            } else {
+                badge.className = 'badge bg-primary';
+                badge.textContent = 'Regular User';
+                button.innerHTML = '<i class="fas fa-user-plus"></i>';
+                button.title = 'Make Admin';
+                button.setAttribute('onclick', `toggleAdminStatus('${userId}', false)`);
+                icon.className = 'fas fa-user';
+            }
+
+            showNotification(`User ${data.is_admin ? 'promoted to' : 'demoted from'} admin successfully!`, 'success');
+        })
+        .catch(error => {
+            console.error('Error toggling admin status:', error);
+            showNotification('Failed to update user status', 'error');
+        })
+        .finally(() => {
+            isLoading = false;
+        });
+    }
+
+    function deleteUser(userId, userName) {
+        if (isLoading) return;
+
+        if (!confirm(`Are you sure you want to permanently delete user "${userName}"? This action cannot be undone.`)) {
+            return;
+        }
+
+        isLoading = true;
+        showNotification('Deleting user...', 'info');
+
+        fetch(`/admin/api/user/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            // Remove the user row from table
+            const userRow = document.getElementById(`user-${userId}`);
+            userRow.style.transition = 'all 0.3s ease';
+            userRow.style.opacity = '0';
+            userRow.style.transform = 'translateX(-100px)';
+
+            setTimeout(() => {
+                userRow.remove();
+                refreshStats(); // Update statistics
+            }, 300);
+
+            showNotification(`User "${userName}" deleted successfully!`, 'success');
+        })
+        .catch(error => {
+            console.error('Error deleting user:', error);
+            showNotification('Failed to delete user', 'error');
+        })
+        .finally(() => {
+            isLoading = false;
+        });
+    }
+
+    function viewUserDetails(userId) {
+        // This would open a modal with detailed user information
+        showNotification('User details modal will be implemented in the next version.', 'info');
+    }
+
+    function refreshUserTable() {
+        if (isLoading) return;
+
+        isLoading = true;
+        showNotification('Refreshing user table...', 'info');
+
+        fetch('/admin/api/users')
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // This would update the entire user table
+                showNotification('User table refreshed successfully!', 'success');
+                setTimeout(() => {
+                    location.reload(); // For now, just reload the page
+                }, 1000);
+            })
+            .catch(error => {
+                console.error('Error refreshing user table:', error);
+                showNotification('Failed to refresh user table', 'error');
+            })
+            .finally(() => {
+                isLoading = false;
+            });
+    }
+
+    // Item Management Functions
+    function deleteItem(itemId, itemTitle) {
+        if (isLoading) return;
+
+        if (!confirm(`Are you sure you want to delete the item "${itemTitle}"? This action cannot be undone.`)) {
+            return;
+        }
+
+        isLoading = true;
+        showNotification('Deleting item...', 'info');
+
+        fetch(`/admin/api/item/${itemId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            // Remove the item row from table
+            const itemRow = document.getElementById(`item-${itemId}`);
+            if (itemRow) {
+                itemRow.style.transition = 'all 0.3s ease';
+                itemRow.style.opacity = '0';
+                itemRow.style.transform = 'translateX(-100px)';
+
+                setTimeout(() => {
+                    itemRow.remove();
+                    refreshStats(); // Update statistics
+                }, 300);
+            }
+
+            showNotification(`Item "${itemTitle}" deleted successfully!`, 'success');
+        })
+        .catch(error => {
+            console.error('Error deleting item:', error);
+            showNotification('Failed to delete item', 'error');
+        })
+        .finally(() => {
+            isLoading = false;
+        });
+    }
+
+    function moderateItem(itemId) {
+        showNotification('Item moderation functionality will be implemented in the next version.', 'info');
+    }
+
+    // Activity Log Functions
+    function refreshActivityLogs() {
+        if (isLoading) return;
+
+        showNotification('Refreshing activity logs...', 'info');
+        setTimeout(() => {
+            location.reload();
+        }, 500);
+    }
+
+    function exportActivityLogs() {
+        showNotification('Activity log export functionality will be implemented in the next version.', 'info');
+    }
+
+    // Export Functions
+    function exportUsers() {
+        showNotification('User export functionality will be implemented in the next version.', 'info');
+    }
+
+    // Settings Functions
+    function saveSettings() {
+        const platformName = document.getElementById('platformName').value;
+        const defaultPoints = document.getElementById('defaultPoints').value;
+        const maxFileSize = document.getElementById('maxFileSize').value;
+        const autoApprove = document.getElementById('autoApprove').checked;
+        const emailNotifications = document.getElementById('emailNotifications').checked;
+        const maintenanceMode = document.getElementById('maintenanceMode').checked;
+
+        if (!platformName || !defaultPoints || !maxFileSize) {
+            showNotification('Please fill in all required fields.', 'error');
+            return;
+        }
+
+        showNotification('Settings saved successfully!', 'success');
+        // In a real application, you would send these settings to the server
+    }
+
+    function changeAdminPassword() {
+        showNotification('Password change functionality will be implemented in the next version.', 'info');
+    }
+
+    // New Admin Functions
+    function viewDetailedAnalytics() {
+        showNotification('Loading detailed analytics...', 'info');
+        // This would open a detailed analytics modal
+        setTimeout(() => {
+            showNotification('Detailed analytics feature will be implemented in the next version.', 'info');
+        }, 1000);
+    }
+
+    function viewItemDetails(itemId) {
+        showNotification('Loading item details...', 'info');
+        // This would open a modal with detailed item information
+        setTimeout(() => {
+            showNotification('Item details modal will be implemented in the next version.', 'info');
+        }, 500);
+    }
+
+    function refreshItemTable() {
+        if (isLoading) return;
+
+        showNotification('Refreshing item table...', 'info');
+        setTimeout(() => {
+            location.reload();
+        }, 500);
+    }
+
+    function exportItems() {
+        showNotification('Item export functionality will be implemented in the next version.', 'info');
+    }
+
+    // Notification System
+    function showNotification(message, type = 'info') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show notification position-fixed`;
+        alertDiv.style.cssText = `
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        `;
+        alertDiv.innerHTML = `
+            <i class="fas fa-${getIconForType(type)} me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        document.body.appendChild(alertDiv);
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+
+    function getIconForType(type) {
+        const icons = {
+            'success': 'check-circle',
+            'error': 'exclamation-triangle',
+            'warning': 'exclamation-triangle',
+            'info': 'info-circle',
+            'danger': 'exclamation-triangle'
+        };
+        return icons[type] || 'info-circle';
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation to elements
+        document.querySelectorAll('.admin-card, .stat-card').forEach((element, index) => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // Auto-refresh stats every 30 seconds
+        setInterval(refreshStats, 30000);
+
+        // Add hover effects to stat cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('glow');
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('glow');
+            });
+        });
+    });
+</script>
+
+<style>
+    .bg-gradient-danger {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    }
+    
+    .avatar-sm {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.8rem;
+    }
+    
+    .admin-item-thumb {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+    .nav-tabs .nav-link {
+        border: none;
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    .nav-tabs .nav-link.active {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    .card {
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .table-responsive {
+            font-size: 0.875rem;
+        }
+        
+        .admin-item-thumb {
+            width: 40px;
+            height: 40px;
+        }
+    }
+</style>
+{% endblock %}

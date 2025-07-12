@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Profile - ReWear{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+        min-height: 100vh;
+    }
+    
+    .admin-profile-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .admin-header {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        border-radius: 20px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .admin-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+    
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .admin-avatar {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: white;
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        z-index: 2;
+    }
+    
+    .stat-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .activity-timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .activity-timeline::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, #667eea, #764ba2);
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 15px;
+        border-left: 4px solid #667eea;
+    }
+    
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -22px;
+        top: 20px;
+        width: 12px;
+        height: 12px;
+        background: #667eea;
+        border-radius: 50%;
+        border: 3px solid white;
+    }
+    
+    .btn-admin {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        border: none;
+        border-radius: 25px;
+        color: white;
+        font-weight: 600;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-admin:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        color: white;
+    }
+    
+    .admin-badge {
+        background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+        color: #333;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: 600;
+        display: inline-block;
+    }
+    
+    .privilege-card {
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .privilege-card:hover {
+        transform: translateX(10px);
+        box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-4">
+    <!-- Admin Profile Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="admin-header p-5">
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                        <div class="admin-avatar mx-auto">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h1 class="fw-bold mb-2">{{ user.name }}</h1>
+                        <div class="admin-badge mb-3">
+                            <i class="fas fa-crown me-2"></i>Super Administrator
+                        </div>
+                        <p class="mb-2 opacity-90">
+                            <i class="fas fa-envelope me-2"></i>{{ user.email }}
+                        </p>
+                        <p class="mb-2 opacity-90">
+                            <i class="fas fa-calendar me-2"></i>Admin since {{ user.created_at[:10] }}
+                        </p>
+                        <p class="mb-0 opacity-90">
+                            <i class="fas fa-shield-alt me-2"></i>Full Platform Control Access
+                        </p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-admin" onclick="editAdminProfile()">
+                                <i class="fas fa-edit me-2"></i>Edit Profile
+                            </button>
+                            <button class="btn btn-admin" onclick="changeAdminPassword()">
+                                <i class="fas fa-key me-2"></i>Change Password
+                            </button>
+                            <button class="btn btn-admin" onclick="confirmAdminLogout()">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="stat-box">
+                <i class="fas fa-sign-in-alt fa-2x mb-2"></i>
+                <h3 class="fw-bold">{{ admin_stats.total_logins }}</h3>
+                <small>Total Logins</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-box">
+                <i class="fas fa-cogs fa-2x mb-2"></i>
+                <h3 class="fw-bold">{{ admin_stats.admin_actions }}</h3>
+                <small>Admin Actions</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-box">
+                <i class="fas fa-clock fa-2x mb-2"></i>
+                <h3 class="fw-bold">{{ admin_stats.last_login[:10] if admin_stats.last_login != 'Never' else 'Never' }}</h3>
+                <small>Last Login</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-box">
+                <i class="fas fa-coins fa-2x mb-2"></i>
+                <h3 class="fw-bold">{{ user.points }}</h3>
+                <small>Admin Points</small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Privileges and Activity -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="admin-profile-card p-4">
+                <h5 class="fw-bold mb-4">
+                    <i class="fas fa-key me-2"></i>Administrator Privileges
+                </h5>
+                
+                <div class="privilege-card">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-users fa-2x me-3"></i>
+                        <div>
+                            <h6 class="mb-1">User Management</h6>
+                            <small class="opacity-75">Create, edit, delete, and manage all user accounts</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="privilege-card">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-tshirt fa-2x me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Content Moderation</h6>
+                            <small class="opacity-75">Review, approve, and remove inappropriate content</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="privilege-card">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-chart-line fa-2x me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Analytics Access</h6>
+                            <small class="opacity-75">View detailed platform statistics and reports</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="privilege-card">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-cog fa-2x me-3"></i>
+                        <div>
+                            <h6 class="mb-1">System Configuration</h6>
+                            <small class="opacity-75">Modify platform settings and configurations</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="privilege-card">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-database fa-2x me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Data Management</h6>
+                            <small class="opacity-75">Export, backup, and manage platform data</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="admin-profile-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-history me-2"></i>Recent Admin Activity
+                    </h5>
+                    <button class="btn btn-admin btn-sm" onclick="refreshAdminActivity()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                    </button>
+                </div>
+                
+                <div class="activity-timeline" style="max-height: 400px; overflow-y: auto;">
+                    {% for activity in activities %}
+                    <div class="timeline-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">
+                                    <i class="fas fa-{{ 'sign-in-alt' if activity.action == 'LOGIN' else 'cog' if 'ADMIN' in activity.action else 'activity' }} me-2"></i>
+                                    {{ activity.action.replace('_', ' ').title() }}
+                                </h6>
+                                <p class="mb-1 text-muted small">{{ activity.details }}</p>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i>{{ activity.timestamp[:19].replace('T', ' ') }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-admin" onclick="viewFullActivityLog()">
+                        <i class="fas fa-list me-2"></i>View Full Activity Log
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Profile Modals -->
+<div class="modal fade" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Admin Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editAdminProfileForm">
+                    <div class="mb-3">
+                        <label for="adminName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="adminName" value="{{ user.name }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="adminEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="adminEmail" value="{{ user.email }}" readonly>
+                        <small class="text-muted">Email cannot be changed for security reasons</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-admin" onclick="saveAdminProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changePasswordModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Admin Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="currentPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" required minlength="6">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-admin" onclick="saveNewPassword()">Change Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function editAdminProfile() {
+        const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+        modal.show();
+    }
+    
+    function saveAdminProfile() {
+        alert('Profile update functionality will be implemented in the next version.');
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+        modal.hide();
+    }
+    
+    function changeAdminPassword() {
+        const modal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+        modal.show();
+    }
+    
+    function saveNewPassword() {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            alert('Please fill in all fields.');
+            return;
+        }
+        
+        if (newPassword !== confirmPassword) {
+            alert('New passwords do not match.');
+            return;
+        }
+        
+        if (newPassword.length < 6) {
+            alert('Password must be at least 6 characters long.');
+            return;
+        }
+        
+        alert('Password change functionality will be implemented in the next version.');
+        const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+        modal.hide();
+    }
+    
+    function confirmAdminLogout() {
+        if (confirm('Are you sure you want to logout from admin panel?')) {
+            window.location.href = '{{ url_for("logout") }}';
+        }
+    }
+    
+    function refreshAdminActivity() {
+        location.reload();
+    }
+    
+    function viewFullActivityLog() {
+        window.location.href = '{{ url_for("admin") }}';
+    }
+    
+    // Add animation to elements
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.admin-profile-card, .stat-box');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    });
+</script>
+{% endblock %}

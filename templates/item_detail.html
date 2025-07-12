@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.title }} - ReWear{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('browse') }}">Browse</a></li>
+            <li class="breadcrumb-item active">{{ item.title }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <!-- Image Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="position-relative">
+                    <img src="{{ url_for('static', filename=item.image.replace('static/', '')) }}"
+                         class="card-img-top item-detail-image"
+                         alt="{{ item.title }}"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="item-image-placeholder" style="display: none; height: 300px; background: #f8f9fa; border: 2px dashed #dee2e6; align-items: center; justify-content: center; flex-direction: column; color: #6c757d;">
+                        <i class="fas fa-image fa-4x mb-3"></i>
+                        <span class="fs-5">No Image Available</span>
+                    </div>
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span class="badge status-{{ item.status }} fs-6">
+                            <i class="fas fa-{{ 'check' if item.status == 'available' else 'times' }} me-1"></i>
+                            {{ item.status.title() }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Images Placeholder -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Multiple Image Support:</strong> This feature will be available in the next version. Users will be able to upload multiple photos of their items.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Item Details Section -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body p-4">
+                    <!-- Title and Points -->
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h2 class="fw-bold">{{ item.title }}</h2>
+                        <div class="text-end">
+                            <div class="badge points-badge fs-5 mb-2">{{ item.points_value }} points</div>
+                            <div class="small text-muted">Exchange Value</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Item Info Grid -->
+                    <div class="row mb-4">
+                        <div class="col-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-tag text-primary me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Category</small>
+                                    <span class="fw-semibold">{{ item.category.title() }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-ruler text-primary me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Size</small>
+                                    <span class="fw-semibold">{{ item.size }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-star text-primary me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Condition</small>
+                                    <span class="fw-semibold">{{ item.condition.title() }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-clock text-primary me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Listed</small>
+                                    <span class="fw-semibold">{{ item.created_at[:10] }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-2">
+                            <i class="fas fa-align-left me-2"></i>Description
+                        </h5>
+                        <p class="text-muted">{{ item.description }}</p>
+                    </div>
+                    
+                    <!-- Owner Info -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-2">
+                            <i class="fas fa-user me-2"></i>Listed by
+                        </h6>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-circle me-3">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <div class="fw-semibold">{{ owner.name }}</div>
+                                <small class="text-muted">Member since {{ owner.created_at[:4] }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2">
+                        {% if session.user_id %}
+                            {% if item.user_id == session.user_id %}
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    This is your item. You can manage it from your dashboard.
+                                </div>
+                                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                                </a>
+                            {% elif item.status == 'available' %}
+                                <button class="btn btn-success btn-lg" onclick="showExchangeModal()">
+                                    <i class="fas fa-exchange-alt me-2"></i>Request Exchange ({{ item.points_value }} points)
+                                </button>
+                                <button class="btn btn-outline-primary btn-lg">
+                                    <i class="fas fa-heart me-2"></i>Add to Wishlist
+                                </button>
+                            {% else %}
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    This item has already been exchanged.
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a> to exchange items.
+                            </div>
+                            <a href="{{ url_for('register') }}" class="btn btn-success btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Join ReWear
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Similar Items Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="fw-bold mb-4">
+                <i class="fas fa-search me-2"></i>Similar Items
+            </h4>
+            <div class="row">
+                <!-- Placeholder for similar items -->
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-tshirt fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Similar items will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Browse more items</p>
+                            <a href="{{ url_for('browse', category=item.category) }}" class="btn btn-primary btn-sm">
+                                View {{ item.category.title() }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Exchange Confirmation Modal -->
+<div class="modal fade" id="exchangeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Exchange</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-exchange-alt fa-3x text-success mb-3"></i>
+                    <h6>Exchange "{{ item.title }}"</h6>
+                </div>
+                <div class="alert alert-info">
+                    <strong>Exchange Details:</strong><br>
+                    • Item: {{ item.title }}<br>
+                    • Cost: {{ item.points_value }} points<br>
+                    • Your current points: <span id="userPoints"></span>
+                </div>
+                <p>Are you sure you want to exchange this item? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ url_for('request_exchange', item_id=item.id) }}" class="btn btn-success">
+                    <i class="fas fa-exchange-alt me-2"></i>Confirm Exchange
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function changeMainImage(src) {
+        document.querySelector('.item-detail-image').src = src;
+    }
+    
+    function showExchangeModal() {
+        {% if session.user_id %}
+        // In a real app, you would fetch user points via AJAX
+        document.getElementById('userPoints').textContent = 'Loading...';
+        const modal = new bootstrap.Modal(document.getElementById('exchangeModal'));
+        modal.show();
+        {% else %}
+        window.location.href = '{{ url_for("login") }}';
+        {% endif %}
+    }
+    
+    // Add zoom effect to main image
+    const mainImage = document.querySelector('.item-detail-image');
+    mainImage.addEventListener('click', function() {
+        this.classList.toggle('zoomed');
+    });
+    
+    // Add animation to elements
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all cards
+    document.querySelectorAll('.card').forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        observer.observe(card);
+    });
+</script>
+
+<style>
+    .item-detail-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    
+    .item-detail-image.zoomed {
+        transform: scale(1.1);
+    }
+    
+    .thumbnail-image {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+    }
+    
+    .thumbnail-image:hover {
+        opacity: 0.8;
+    }
+    
+    .avatar-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+    }
+    
+    .points-badge {
+        background: linear-gradient(45deg, #ff9a9e, #fecfef);
+        color: #333;
+        font-weight: 600;
+        border-radius: 20px;
+        padding: 8px 16px;
+    }
+    
+    .status-available {
+        background: linear-gradient(45deg, #a8edea, #fed6e3);
+        color: #333;
+    }
+    
+    .status-exchanged {
+        background: linear-gradient(45deg, #ffecd2, #fcb69f);
+        color: #333;
+    }
+    
+    .breadcrumb {
+        background: none;
+        padding: 0;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        color: #6c757d;
+    }
+    
+    .card {
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+    }
+    
+    @media (max-width: 768px) {
+        .item-detail-image {
+            height: 300px;
+        }
+        
+        .thumbnail-image {
+            height: 60px;
+        }
+    }
+</style>
+{% endblock %}

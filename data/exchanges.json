@@ -1,0 +1,47 @@
+[
+  {
+    "id": "6d66238c-bcf8-498a-a95e-2c2dcaa1aa26",
+    "item_id": "c55d532c-7c7a-468d-a3e3-fe3ede605189",
+    "requester_id": "2dae7e5d-e52e-42b2-b450-c869cc7ea981",
+    "owner_id": "8498cfd4-4708-4439-be0a-c3ae655302c0",
+    "points": 50,
+    "status": "completed",
+    "created_at": "2025-07-11T11:51:50.460562"
+  },
+  {
+    "id": "15973011-f835-4377-bc41-7b3fe78f18f3",
+    "item_id": "0d3b6093-7295-4067-b697-52584d494f7b",
+    "requester_id": "3a616d35-4333-4cfb-a698-7f7943f56d24",
+    "owner_id": "0c556ed4-e0a6-4519-83e2-48851e27c85d",
+    "points": 45,
+    "status": "completed",
+    "created_at": "2025-07-12T11:59:47.956755"
+  },
+  {
+    "id": "728eae9b-b4da-4522-a26c-f2782a733e2b",
+    "item_id": "7574b3f7-6bcd-4b95-93db-89e57498ddcd",
+    "requester_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "owner_id": "3a616d35-4333-4cfb-a698-7f7943f56d24",
+    "points": 40,
+    "status": "completed",
+    "created_at": "2025-07-12T12:06:48.662990"
+  },
+  {
+    "id": "d260f404-7c95-4790-a57d-8f62419e009f",
+    "item_id": "a35a8c0a-2dc7-4997-a37f-5f8ecd7b2d1e",
+    "requester_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "owner_id": "8498cfd4-4708-4439-be0a-c3ae655302c0",
+    "points": 60,
+    "status": "completed",
+    "created_at": "2025-07-12T12:08:16.425279"
+  },
+  {
+    "id": "a3c5038a-d1ea-4c9f-bc3d-4d682b3d597d",
+    "item_id": "937000aa-a80a-439c-9012-cbd136bc29f2",
+    "requester_id": "7921cd13-7bb5-4cbd-860e-e89e117672ea",
+    "owner_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "points": 20,
+    "status": "completed",
+    "created_at": "2025-07-12T13:10:51.840309"
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "15e89fc5-5622-4414-b67f-f636e6e9b97e",
+    "user_id": "144ccf2c-b986-4c6b-8870-7023890b2f41",
+    "action": "REGISTER",
+    "details": "New user Mayur Bharvad registered with email mkbharvad7174@gmail.com",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T12:44:04.390763",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "28cb30ce-fac5-4437-a9fa-399058af753f",
+    "user_id": "144ccf2c-b986-4c6b-8870-7023890b2f41",
+    "action": "LOGIN",
+    "details": "User Mayur Bharvad logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T12:44:10.907623",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "555a9935-0c5b-4b93-8361-dd81ca126426",
+    "user_id": "7921cd13-7bb5-4cbd-860e-e89e117672ea",
+    "action": "LOGIN",
+    "details": "User Admin User logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T12:45:14.848773",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "a94c2c50-28f8-4e41-915f-8412ef78f01a",
+    "user_id": "7921cd13-7bb5-4cbd-860e-e89e117672ea",
+    "action": "ITEM_EXCHANGE_REQUEST",
+    "details": "Requested exchange for item: jacket (spent 20 points)",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T13:10:51.851286",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "7134898b-9674-4c8a-83e9-0d8623185149",
+    "user_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "action": "ITEM_EXCHANGE_RECEIVED",
+    "details": "Item exchanged: jacket (earned 20 points)",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T13:10:51.873498",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  },
+  {
+    "id": "4e2d6482-a8e5-407d-afc5-34d22a4bcf2c",
+    "user_id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "action": "LOGIN",
+    "details": "User Meet patel logged in successfully",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-07-12T13:13:46.898491",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
+  }
+]

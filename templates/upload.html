@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Item - ReWear{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-success text-white">
+                <div class="card-body text-center p-4">
+                    <h2 class="fw-bold mb-2">Share Your Fashion</h2>
+                    <p class="mb-0 opacity-75">Upload your pre-loved items and give them a new life while earning points</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                        <div class="row">
+                            <!-- Image Upload Section -->
+                            <div class="col-md-6 mb-4">
+                                <h5 class="fw-bold mb-3">
+                                    <i class="fas fa-camera me-2"></i>Item Photo
+                                </h5>
+                                <div class="upload-area" id="uploadArea">
+                                    <div class="upload-content">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                        <h6 class="text-muted">Drag & drop your image here</h6>
+                                        <p class="text-muted small">or click to browse</p>
+                                        <input type="file" 
+                                               class="form-control d-none" 
+                                               id="image" 
+                                               name="image" 
+                                               accept="image/*">
+                                    </div>
+                                    <div class="preview-container d-none">
+                                        <img id="imagePreview" class="preview-image" alt="Preview">
+                                        <button type="button" class="btn btn-sm btn-danger remove-image">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Supported formats: JPG, PNG, GIF (Max 16MB)
+                                </small>
+                            </div>
+                            
+                            <!-- Item Details Section -->
+                            <div class="col-md-6">
+                                <h5 class="fw-bold mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Item Details
+                                </h5>
+                                
+                                <div class="mb-3">
+                                    <label for="title" class="form-label fw-semibold">
+                                        <i class="fas fa-tag me-1"></i>Item Title *
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="title" 
+                                           name="title" 
+                                           required 
+                                           placeholder="e.g., Vintage Denim Jacket">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="category" class="form-label fw-semibold">
+                                        <i class="fas fa-list me-1"></i>Category *
+                                    </label>
+                                    <select class="form-select" id="category" name="category" required>
+                                        <option value="">Select Category</option>
+                                        <option value="tops">Tops</option>
+                                        <option value="bottoms">Bottoms</option>
+                                        <option value="dresses">Dresses</option>
+                                        <option value="outerwear">Outerwear</option>
+                                        <option value="shoes">Shoes</option>
+                                        <option value="accessories">Accessories</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="size" class="form-label fw-semibold">
+                                                <i class="fas fa-ruler me-1"></i>Size *
+                                            </label>
+                                            <select class="form-select" id="size" name="size" required>
+                                                <option value="">Select Size</option>
+                                                <option value="XS">XS</option>
+                                                <option value="S">S</option>
+                                                <option value="M">M</option>
+                                                <option value="L">L</option>
+                                                <option value="XL">XL</option>
+                                                <option value="XXL">XXL</option>
+                                                <option value="One Size">One Size</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="condition" class="form-label fw-semibold">
+                                                <i class="fas fa-star me-1"></i>Condition *
+                                            </label>
+                                            <select class="form-select" id="condition" name="condition" required>
+                                                <option value="">Select Condition</option>
+                                                <option value="excellent">Excellent</option>
+                                                <option value="good">Good</option>
+                                                <option value="fair">Fair</option>
+                                                <option value="poor">Poor</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="points_value" class="form-label fw-semibold">
+                                        <i class="fas fa-coins me-1"></i>Points Value *
+                                    </label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="points_value" 
+                                           name="points_value" 
+                                           required 
+                                           min="1" 
+                                           max="500" 
+                                           placeholder="e.g., 50">
+                                    <small class="text-muted">How many points should this item cost?</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Description Section -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <label for="description" class="form-label fw-semibold">
+                                        <i class="fas fa-align-left me-1"></i>Description *
+                                    </label>
+                                    <textarea class="form-control" 
+                                              id="description" 
+                                              name="description" 
+                                              rows="4" 
+                                              required 
+                                              placeholder="Describe your item in detail. Include brand, material, style, and any flaws or special features..."></textarea>
+                                    <small class="text-muted">
+                                        <span id="charCount">0</span>/500 characters
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Upload Guidelines -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <h6 class="fw-bold">
+                                        <i class="fas fa-lightbulb me-2"></i>Upload Guidelines
+                                    </h6>
+                                    <ul class="mb-0 small">
+                                        <li>Take clear, well-lit photos showing the item's condition</li>
+                                        <li>Be honest about any flaws or wear</li>
+                                        <li>Set fair point values based on item condition and brand</li>
+                                        <li>Include relevant details like brand, material, and care instructions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg me-md-2">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fas fa-upload me-2"></i>Upload Item
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Image upload functionality
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('image');
+    const imagePreview = document.getElementById('imagePreview');
+    const uploadContent = uploadArea.querySelector('.upload-content');
+    const previewContainer = uploadArea.querySelector('.preview-container');
+    const removeImageBtn = uploadArea.querySelector('.remove-image');
+    
+    // Click to upload
+    uploadArea.addEventListener('click', () => {
+        if (!previewContainer.classList.contains('d-none')) return;
+        fileInput.click();
+    });
+    
+    // Drag and drop
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('drag-over');
+    });
+    
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('drag-over');
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileSelect(files[0]);
+        }
+    });
+    
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFileSelect(e.target.files[0]);
+        }
+    });
+    
+    // Remove image
+    removeImageBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.value = '';
+        uploadContent.classList.remove('d-none');
+        previewContainer.classList.add('d-none');
+    });
+    
+    function handleFileSelect(file) {
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            return;
+        }
+        
+        if (file.size > 16 * 1024 * 1024) {
+            alert('File size must be less than 16MB.');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            uploadContent.classList.add('d-none');
+            previewContainer.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    // Character counter
+    const descriptionTextarea = document.getElementById('description');
+    const charCount = document.getElementById('charCount');
+    
+    descriptionTextarea.addEventListener('input', () => {
+        const count = descriptionTextarea.value.length;
+        charCount.textContent = count;
+        
+        if (count > 500) {
+            charCount.classList.add('text-danger');
+            descriptionTextarea.classList.add('is-invalid');
+        } else {
+            charCount.classList.remove('text-danger');
+            descriptionTextarea.classList.remove('is-invalid');
+        }
+    });
+    
+    // Form validation
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        const title = document.getElementById('title').value;
+        const category = document.getElementById('category').value;
+        const size = document.getElementById('size').value;
+        const condition = document.getElementById('condition').value;
+        const pointsValue = document.getElementById('points_value').value;
+        const description = document.getElementById('description').value;
+        
+        if (!title || !category || !size || !condition || !pointsValue || !description) {
+            e.preventDefault();
+            alert('Please fill in all required fields.');
+            return;
+        }
+        
+        if (description.length > 500) {
+            e.preventDefault();
+            alert('Description must be 500 characters or less.');
+            return;
+        }
+        
+        if (pointsValue < 1 || pointsValue > 500) {
+            e.preventDefault();
+            alert('Points value must be between 1 and 500.');
+            return;
+        }
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uploading...';
+        submitBtn.disabled = true;
+        
+        // Re-enable button after 5 seconds (in case of error)
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 5000);
+    });
+    
+    // Auto-suggest points based on condition
+    document.getElementById('condition').addEventListener('change', function() {
+        const pointsInput = document.getElementById('points_value');
+        if (!pointsInput.value) {
+            const suggestions = {
+                'excellent': 80,
+                'good': 60,
+                'fair': 40,
+                'poor': 20
+            };
+            pointsInput.value = suggestions[this.value] || '';
+        }
+    });
+</script>
+
+<style>
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    }
+    
+    .upload-area {
+        border: 3px dashed #dee2e6;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    
+    .upload-area:hover {
+        border-color: #4ecdc4;
+        background-color: #f8f9fa;
+    }
+    
+    .upload-area.drag-over {
+        border-color: #4ecdc4;
+        background-color: #e8f5f4;
+    }
+    
+    .preview-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .preview-image {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+    
+    .remove-image {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #4ecdc4;
+        box-shadow: 0 0 0 0.2rem rgba(78, 205, 196, 0.25);
+    }
+    
+    .card {
+        border: none;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .alert-info {
+        background: linear-gradient(45deg, #e3f2fd, #f0f8ff);
+        border: none;
+        border-left: 4px solid #2196f3;
+    }
+    
+    @media (max-width: 768px) {
+        .upload-area {
+            padding: 1rem;
+            min-height: 150px;
+        }
+        
+        .preview-image {
+            max-height: 150px;
+        }
+    }
+</style>
+{% endblock %}

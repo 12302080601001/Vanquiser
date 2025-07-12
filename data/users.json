@@ -1,0 +1,74 @@
+[
+  {
+    "id": "2dae7e5d-e52e-42b2-b450-c869cc7ea981",
+    "email": "demo@rewear.com",
+    "password": "pbkdf2:sha256:600000$nT91Z1qFD73P2yq3$97323b59d04538a65a02d6f2a5b8267b62de2d2d7c710fbe80400b8c3e53a55e",
+    "name": "Demo User",
+    "points": 150,
+    "created_at": "2025-06-12T11:51:49.687548",
+    "is_admin": false
+  },
+  {
+    "id": "7921cd13-7bb5-4cbd-860e-e89e117672ea",
+    "email": "admin@rewear.com",
+    "password": "pbkdf2:sha256:600000$5P4iai52VrwJhSXE$45b2df4feb8ac655a948ed1b5615cb4ef57c2346412acd40e85e5e0cbb9fa4ac",
+    "name": "Admin User",
+    "points": 480,
+    "created_at": "2025-05-13T11:51:49.878928",
+    "is_admin": true
+  },
+  {
+    "id": "8498cfd4-4708-4439-be0a-c3ae655302c0",
+    "email": "sarah@example.com",
+    "password": "pbkdf2:sha256:600000$rR7m7iVeA3LKpmBD$86548bd5a17c407e38e5497ebe6989e24275ef7dfed243648ff2043aa37dde09",
+    "name": "Sarah Johnson",
+    "points": 260,
+    "created_at": "2025-06-22T11:51:50.071265",
+    "is_admin": false
+  },
+  {
+    "id": "7fdb9121-9ba5-43d3-acc8-8f856fe59d95",
+    "email": "mike@example.com",
+    "password": "pbkdf2:sha256:600000$KpnfQCliaztSEk1Y$715f93488af56fa9636a1da00a8d8562dc7cffec56cc601c3141bca9521c75be",
+    "name": "Mike Chen",
+    "points": 80,
+    "created_at": "2025-06-27T11:51:50.265428",
+    "is_admin": false
+  },
+  {
+    "id": "0c556ed4-e0a6-4519-83e2-48851e27c85d",
+    "email": "emma@example.com",
+    "password": "pbkdf2:sha256:600000$mmQ7DtENFPtlOZXF$c4921a075812a09700c65b516082be56fe191901b841e84c439fb10950b80b60",
+    "name": "Emma Wilson",
+    "points": 165,
+    "created_at": "2025-07-02T11:51:50.460562",
+    "is_admin": false
+  },
+  {
+    "id": "3a616d35-4333-4cfb-a698-7f7943f56d24",
+    "email": "mkbharvad8080@gmail.com",
+    "password": "pbkdf2:sha256:600000$7uZD1o79YQUjAr6C$1a0cebee8b6d8a63d4779708b5127ccfd8cb0af161d084406f8da9209840acbf",
+    "name": "Mayur Bharvad",
+    "points": 95,
+    "created_at": "2025-07-12T11:58:09.114676",
+    "is_admin": false
+  },
+  {
+    "id": "d554ccd7-7692-48cb-8e1d-cbcff5448273",
+    "email": "mkbharvad534@gmail.com",
+    "password": "pbkdf2:sha256:600000$jDa8eTQavqTLKLFt$aeb193830cbdb56b41bf9d13036ff8d9bdab0223aae7aa7b7c3ea15e93052d18",
+    "name": "Meet patel",
+    "points": 20,
+    "created_at": "2025-07-12T12:04:23.201866",
+    "is_admin": false
+  },
+  {
+    "id": "144ccf2c-b986-4c6b-8870-7023890b2f41",
+    "email": "mkbharvad7174@gmail.com",
+    "password": "pbkdf2:sha256:600000$rcGA2gHjoPee9KCT$e0b7e04af10f2e8d530205722b27748d4dbc2ad2f97a4d344158437fc0b1bfad",
+    "name": "Mayur Bharvad",
+    "points": 100,
+    "created_at": "2025-07-12T12:44:04.387290",
+    "is_admin": false
+  }
+]
