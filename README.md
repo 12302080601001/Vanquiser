@@ -1,3 +1,4 @@
+**Vanquiser**
 # 👗 ReWear - Sustainable Fashion Exchange Platform
 
 A modern, comprehensive web application for exchanging fashion items sustainably. Built with Flask, featuring advanced user management, analytics, and a world-class admin dashboard.
