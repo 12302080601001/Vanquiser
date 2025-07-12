@@ -8,11 +8,11 @@ services:
       pip install --upgrade pip setuptools wheel
       pip install -r requirements.txt
       echo "🔍 Verifying installations..."
-      python -c "import gunicorn; print('✅ Gunicorn available via Python')"
+      python -c "import gunicorn; print('✅ Gunicorn available')"
       python -c "import flask; print('✅ Flask available')"
       python -c "import pymongo; print('✅ PyMongo available')"
       echo "✅ Build completed successfully!"
-    startCommand: python run_server.py
+    startCommand: python app.py
     envVars:
       - key: FLASK_ENV
         value: production
