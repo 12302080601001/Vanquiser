@@ -216,7 +216,6 @@ For questions, suggestions, or issues:
 # Vanquiser
 
 Team Name: Vanquiser
-Problem Statement:
 
 ReWear – Community Clothing Exchange
 Overview:
